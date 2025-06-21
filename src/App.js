@@ -16,6 +16,12 @@ import AddProduct from './containers/product/AddProduct';
 import EditProduct from './containers/product/EditProduct';
 import Order from './containers/order/order';
 import "../src/App.css"
+import PaymentsAndSettlements from './containers/PaymentsAndSettlements/PaymentsAndSettlements';
+import ReviewManagement from './containers/reviewManagement/ReviewManagement';
+import UserAccess from './containers/userAccess/UserAccess';
+import ProductDetails from './containers/product/ProductDetails';
+import Sidebar from './containers/dashboard/layout/Sidebar';
+import OrderDetail from './containers/order/OrderDetail';
 function App() {
   return (
     <Router>
@@ -29,8 +35,18 @@ function App() {
         <Route path="profile" element={<Profile />} />
             <Route path="product" element={<Product />} />
                     <Route path="addproduct" element={<AddProduct />} />
-                    <Route path="edit" element ={<EditProduct/>}/>
-                                <Route path="order" element ={<Order/>}/>
+                    <Route path="edit/:id" element ={<EditProduct/>}/>
+                                {/* <Route path="order" element ={<Order/>}/>
+                                      <Route path="payments" element ={<PaymentsAndSettlements/>}/>
+                                        <Route path="useraccess" element ={<UserAccess/>}/>
+                                                       <Route path="useraccess" element ={<UserAccess/>}/> */}
+                                      
+{/*                                       
+<Route path="/reviews" element={<ReviewManagement />} /> */}
+{/* <Route path="/product/:id" element={<ProductDetails />} /> */}
+
+{/* <Route path="/side" element={<Sidebar />} /> */}
+        {/* <Route path="/orders/:orderId" element={<OrderDetail />} /> */}
         </Route>
       </Routes>
     </Router>

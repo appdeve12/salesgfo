@@ -12,6 +12,8 @@ import {
   Upload,
   message,
 } from 'antd';
+import { Breadcrumb } from 'antd';
+import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { UploadOutlined } from '@ant-design/icons';
 
@@ -72,7 +74,15 @@ const EditProduct = () => {
   if (!product) return null;
 
   return (
-    <Card title={`Edit Product: ${product.title}`}>
+    <>
+          <Breadcrumb style={{ marginBottom: 16 }}>
+    
+      <Breadcrumb.Item>
+        <Link to="/product">Products</Link>
+      </Breadcrumb.Item>
+      <Breadcrumb.Item>Edit Product</Breadcrumb.Item>
+    </Breadcrumb>
+    <Card title={` ${product.title}`}>
       <Form layout="vertical" form={form} onFinish={onFinish}>
         <Row gutter={16}>
           <Col span={12}>
@@ -170,6 +180,7 @@ const EditProduct = () => {
         </Form.Item>
       </Form>
     </Card>
+    </>
   );
 };
 

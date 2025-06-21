@@ -11,9 +11,11 @@ import {
   Row,
   Col,
   message,
+  DatePicker
 } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-
+import { Breadcrumb } from 'antd';
+import { Link } from 'react-router-dom';
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -24,9 +26,18 @@ const AddProduct = () => {
     console.log('🟢 Final Product Data:', values);
     message.success('Product submitted!');
   };
-
+ 
   return (
-    <Card title="Add New Product">
+    <>
+      <Breadcrumb style={{ marginBottom: 16 }}>
+    
+      <Breadcrumb.Item>
+        <Link to="/product">Products</Link>
+      </Breadcrumb.Item>
+      <Breadcrumb.Item>Add Product</Breadcrumb.Item>
+    </Breadcrumb>
+
+    <Card >
       <Form
         layout="vertical"
         form={form}
@@ -40,17 +51,28 @@ const AddProduct = () => {
       >
         {/* Basic Info */}
         <Row gutter={16}>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item label="Title" name="title" rules={[{ required: true }]}>
               <Input placeholder="Product Title" />
             </Form.Item>
           </Col>
 
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item label="SKU" name="sku" rules={[{ required: true }]}>
               <Input placeholder="Stock Keeping Unit" />
             </Form.Item>
           </Col>
+                <Col span={4}>
+            <Form.Item label="Handling Time" name="handlingtime" rules={[{ required: true }]}>
+          <DatePicker />
+            </Form.Item>
+          </Col>
+             <Col span={4}>
+            <Form.Item label="Restock Date" name="restockdate" rules={[{ required: true }]}>
+          <DatePicker />
+            </Form.Item>
+            
+                      </Col>
         </Row>
 
         <Form.Item label="Description" name="description" rules={[{ required: true }]}>
@@ -131,12 +153,14 @@ const AddProduct = () => {
         </Card>
 
         <Form.Item style={{ marginTop: 24 }}>
-          <Button type="primary" htmlType="submit">
-            Save Product
-          </Button>
+       
+          <Button className="custumcss textwhite" htmlType="submit">
+                          Save Product
+                    </Button>
         </Form.Item>
       </Form>
     </Card>
+    </>
   );
 };
 

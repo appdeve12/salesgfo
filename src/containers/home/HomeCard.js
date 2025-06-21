@@ -50,19 +50,20 @@ const HomeCard = () => {
         <div style={{ ...valueStyle, }}>$1,200,550</div>
         <div style={changeStyle}>▲ +38% from last month</div>
       </Card>
-
-      {/* Revenue */}
-      <Card  className="custumcss textwhite" style={{ ...cardStyle,padding:"0px" }}>
+  <Card className="custumcss textwhite"style={{ ...cardStyle ,padding:"0px"}}>
         <div style={titleStyle}>
-              Revenue
-          <RiseOutlined style={{ fontSize: 20 }} />
-        
+            New Order
+          <DollarOutlined style={{  fontSize: 20 }} />
+          
         </div>
-        <div style={{ ...valueStyle, }}>$950,031</div>
-        <div style={changeStyle}>▲ +45% from last month</div>
+        <div style={{ ...valueStyle, }}>1000 +</div>
+        {/* <div style={changeStyle}>▲ +38% from last month</div> */}
+     
       </Card>
-
-      {/* Tax Report Reminder */}
+      
+   
+   
+      
       <Card className="custumcss textwhite" style={{ ...cardStyle ,padding:"0px" }}>
         <div style={titleStyle}>
              Tax Report
@@ -71,7 +72,7 @@ const HomeCard = () => {
         </div>
         <p style={{ fontSize: 16, marginTop: 12 }}>
           Submit your <strong>yearly tax report</strong> by <b>Oct 20</b>.
-        </p>
+        </p> 
       </Card>
          <Card className="custumcss textwhite" style={{ ...cardStyle ,padding:"0px" }}>
         <div style={titleStyle}>

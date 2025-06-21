@@ -28,8 +28,9 @@
   color: #61dafb;
 }
 .custumcss{
-background-color: rgb(58 71 100);
+/* background-color: rgb(58 71 100); */
 /* background-color:  rgb(159 0 0); */
+background-color: #627ea1;
 }
 .backtrans{
   background: transparent;

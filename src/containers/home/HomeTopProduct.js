@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col, Card, Typography, Avatar } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 
 import { Pie } from 'react-chartjs-2';
@@ -14,8 +15,8 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianG
 ChartJS.register(ArcElement, ChartTooltip, Legend);
 const { Title, Text } = Typography;
 
-
 const HomeTopProduct = () => {
+  const navigate=useNavigate();
   // Pie chart for demographics
 const pieData = {
   labels: ['Male', 'Female', 'Others'],
@@ -67,6 +68,9 @@ const trendData = [
   { date: 'Jun 15', orders: 210 },
   { date: 'Jun 18', orders: 190 },
 ];
+const ProductDetails=(pro)=>{
+navigate(`/product/${pro.id}`)
+}
   return (
     <Row gutter={24} style={{marginBottom:"24px"}}>
       {/* Left 16-part content (you can add chart or overview here later) */}
@@ -125,11 +129,14 @@ const trendData = [
           {products.map((product) => (
             <Card
               key={product.id}
+
+              onClick={()=>ProductDetails(product)}
               style={{
                 marginBottom: 16,
                 borderRadius: 12,
                 boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
                 padding: '12px 16px',
+                cursor:"pointer"
               }}
               bodyStyle={{ display: 'flex', alignItems: 'center', gap: 16,padding:10 }}
             >

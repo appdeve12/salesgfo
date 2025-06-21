@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const { Title } = Typography;
 
 const ForgotPassword = () => {
-  const onFinish = (values) => {
+  const onFinish = (values) => { 
     console.log('Forgot Password:', values);
     // Add API integration here
   };
@@ -29,10 +29,12 @@ const ForgotPassword = () => {
           <Form.Item style={{ marginBottom: 0, textAlign: 'center' }}>
             Remembered your password? <Link to="/" style={{ color: '#007185' }}>Sign-In</Link>
           </Form.Item>
+        
         </Form>
       </Card>
     </div>
   );
+
 };
 
 // 🔥 Styling
@@ -60,7 +62,7 @@ const inputStyle = {
 
 const buttonStyle = {
   backgroundColor: 'rgb(58 71 100)',
-  color:"white",
+  color:"white", 
   borderColor: '#f08804',
   borderRadius: 8,
   fontWeight: 'bold',

@@ -48,8 +48,15 @@ background-color: #627ea1;
   /* border-radius: 8px; */
   transition: all 0.3s ease;
   font-size: 18px;
+    width: 84%;
 }
 
+.custum-pedding .ant-card-body{
+  padding: 0px;
+}
+.custum-pedding-cell .ant-table-cell{
+      padding: 9px 9px !important;
+}
 
 
 .custom-menu .ant-menu-item-selected {
@@ -58,6 +65,7 @@ background-color: #627ea1;
   font-weight: bold;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border-radius: unset;
+  width: 84%;
 }
 .textwhite{
   color: #ffffff;

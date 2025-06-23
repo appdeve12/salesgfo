@@ -1,13 +1,16 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Table, Tabs, Tag, Button, Space, Modal, Input, message } from 'antd';
 import { PrinterOutlined, EyeOutlined, ReloadOutlined, TruckOutlined } from '@ant-design/icons';
 import html2pdf from 'html2pdf.js';
+import Spinner from '../../components/Spinner';
 
 const { TabPane } = Tabs;
 
 const Order = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
   const [orders, setOrders] = useState([
     {
       key: '1',
@@ -52,48 +55,48 @@ const Order = () => {
       tracking: 'AWB12345678',
       products: [
         {
-        _id: 786,
-        title: 'Wireless Earbuds',
-        sku: 'SKU123456',
-        handlingtime: '2025-06-25',
-        restockdate: '2025-07-10',
-        description: 'High-quality wireless earbuds with noise cancellation.',
-        price: 2499,
-        discount: 10,
-        category: 'electronics',
-        brand: 'SoundTech',
-        quantity: 50,
-        inStock: true,
-        tmBrandName: 'SoundTech™',
-        tmReferenceNo: 'TM987654',
-        media: [
-          { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
-          { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
-          { type: 'video', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' }
-        ]
-      },
-             {
-        _id: 7866,
-        title: 'Wireless Earbuds',
-        sku: 'SKU123456',
-        handlingtime: '2025-06-25',
-        restockdate: '2025-07-10',
-        description: 'High-quality wireless earbuds with noise cancellation.',
-        price: 2499,
-        discount: 10,
-        category: 'electronics',
-        brand: 'SoundTech',
-        quantity: 50,
-        inStock: true,
-        tmBrandName: 'SoundTech™',
-        tmReferenceNo: 'TM987654',
-        media: [
-          { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
-          { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
-          { type: 'video', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' }
-        ]
-      },
-    ]
+          _id: 786,
+          title: 'Wireless Earbuds',
+          sku: 'SKU123456',
+          handlingtime: '2025-06-25',
+          restockdate: '2025-07-10',
+          description: 'High-quality wireless earbuds with noise cancellation.',
+          price: 2499,
+          discount: 10,
+          category: 'electronics',
+          brand: 'SoundTech',
+          quantity: 50,
+          inStock: true,
+          tmBrandName: 'SoundTech™',
+          tmReferenceNo: 'TM987654',
+          media: [
+            { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
+            { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
+            { type: 'video', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' }
+          ]
+        },
+        {
+          _id: 7866,
+          title: 'Wireless Earbuds',
+          sku: 'SKU123456',
+          handlingtime: '2025-06-25',
+          restockdate: '2025-07-10',
+          description: 'High-quality wireless earbuds with noise cancellation.',
+          price: 2499,
+          discount: 10,
+          category: 'electronics',
+          brand: 'SoundTech',
+          quantity: 50,
+          inStock: true,
+          tmBrandName: 'SoundTech™',
+          tmReferenceNo: 'TM987654',
+          media: [
+            { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
+            { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
+            { type: 'video', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' }
+          ]
+        },
+      ]
     },
     {
       key: '3',
@@ -226,21 +229,29 @@ const Order = () => {
         <Space>
           <Button icon={<EyeOutlined />} onClick={() => setVisibleOrder(record)}>View</Button>
           {record.status === 'Pending' && (
-            <Button icon={<ReloadOutlined />} onClick={() => handleProcess(record)}>Process</Button>
+            <Button icon={<ReloadOutlined />} onClick={(e) => { e.stopPropagation(); handleProcess(record) }}>Process</Button>
           )}
-          <Button icon={<TruckOutlined />} onClick={() => { setVisibleOrder(record); setShowTrackingModal(true); }}>
+          <Button icon={<TruckOutlined />} onClick={(e) => { e.stopPropagation(); setVisibleOrder(record); setShowTrackingModal(true); }}>
             Tracking
           </Button>
           {record.status === 'Shipped' && (
-            <Button icon={<PrinterOutlined />} onClick={() => { setVisibleOrder(record); handlePrint(); }}>
+            <Button icon={<PrinterOutlined />} onClick={(e) => { e.stopPropagation(); setVisibleOrder(record); handlePrint(e); }}>
               Invoice
             </Button>
           )}
-          <Button danger onClick={() => handleCancel(record)}>Cancel</Button>
+          <Button danger onClick={(e) => { e.stopPropagation(); handleCancel(record) }}>Cancel</Button>
         </Space>
       ),
     },
   ];
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div>

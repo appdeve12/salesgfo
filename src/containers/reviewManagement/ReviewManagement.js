@@ -102,7 +102,7 @@ const ReviewManagement = () => {
   ];
 
   return (
-    <div style={{ padding: 24 }}>
+    <div >
       <h2>Review & Rating Management</h2>
       <Card title="Customer Reviews & Feedback" bordered={false}>
         <Table

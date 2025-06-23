@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Card, Row, Col, Typography, Divider, Tag, Image, Descriptions, Button, Spin, message
+  Card, Row, Col, Typography, Divider, Tag, Image, Descriptions, Button, Spin, message,Breadcrumb
 } from 'antd';
 import { PlayCircleOutlined, ArrowLeftOutlined } from '@ant-design/icons';
-import { useNavigate, useParams } from 'react-router-dom';
-
+import { useNavigate, useParams,Link } from 'react-router-dom';
+import { Carousel } from 'antd';
 const { Title, Text } = Typography;
 
 const ProductDetails = () => {
@@ -60,35 +60,47 @@ const ProductDetails = () => {
   if (loading) return <Spin fullscreen tip="Loading product..." size="large"/>;
 
   return (
+    <>
+       <Breadcrumb style={{ marginBottom: 16 }}>
+    
+      <Breadcrumb.Item>
+        <Link to="/product">Products</Link>
+      </Breadcrumb.Item>
+      <Breadcrumb.Item> <span>{product.title}</span></Breadcrumb.Item>
+    </Breadcrumb>  
     <Card
-      title={
-        <>
-          <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/product')} style={{ marginRight: 10 }} />
-          <span>{product.title}</span>
-        </>
-      }
+      // title={
+      //   <>
+      //     <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/product')} style={{ marginRight: 10 }} />
+      //     <span>{product.title}</span>
+      //   </>
+      // }
     >
       <Row gutter={24}>
         {/* Media */}
-        <Col span={10}>
-          <Title level={4}>Media</Title>
-          <Row gutter={[8, 8]}>
-            {product.media.map((file, i) =>
-              file.type === 'image' ? (
-                <Col span={24} key={i}>
-                  <Image width="100%" src={file.url} />
-                </Col>
-              ) : (
-                <Col span={24} key={i}>
-                  <video width="100%" controls>
-                    <source src={file.url} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                </Col>
-              )
-            )}
-          </Row>
-        </Col>
+       <Col span={10}>
+  <Title level={4}>Media</Title>
+  <Carousel autoplay dots>
+    {product.media.map((file, i) => (
+      <div key={i} style={{ textAlign: 'center' }}>
+        {file.type === 'image' ? (
+          <Image
+          width="100%" height="300"
+            src={file.url}
+            alt={`media-${i}`}
+            style={{objectFit: 'contain', margin: '0 auto' }}
+          />
+        ) : (
+          <video width="100%" height="300" controls>
+            <source src={file.url} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        )}
+      </div>
+    ))}
+  </Carousel>
+</Col>
+
 
         {/* Product Info */}
         <Col span={14}>
@@ -119,6 +131,7 @@ const ProductDetails = () => {
         </Col>
       </Row>
     </Card>
+    </>
   );
 };
 

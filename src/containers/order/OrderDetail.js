@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import { useLocation, useParams, useNavigate,Link } from 'react-router-dom';
 import {
   Card,
   Descriptions,
@@ -11,6 +11,7 @@ import {
   Typography,
   Divider,
   Tabs,
+  Breadcrumb
 } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 
@@ -27,14 +28,16 @@ const OrderDetail = () => {
   if (!order) return <p>Order not found.</p>;
 
   return (
-    <div style={{ padding: '2rem' }}>
-      {/* Back Button */}
-      <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/order')} style={{ marginBottom: 20 }}>
-        Back to Orders
-      </Button>
-
-      {/* Order Info */}
-      <Card title={`Order Details - ${order.orderId}`} bordered={false}>
+    <div>
+               <Breadcrumb style={{ marginBottom: 16 }}>
+    
+      <Breadcrumb.Item>
+        <Link to="/order">Orders</Link>
+      </Breadcrumb.Item>
+      <Breadcrumb.Item>Order Details - ${order.orderId}</Breadcrumb.Item>
+    </Breadcrumb> 
+    <Row gutter={12}>
+      <Col span={12}><Card    className='custum-pedding'       bordered={false}>
         <Descriptions bordered column={1}>
           <Descriptions.Item label="Customer">{order.customer}</Descriptions.Item>
           <Descriptions.Item label="Order Date">{order.date}</Descriptions.Item>
@@ -47,14 +50,10 @@ const OrderDetail = () => {
           <Descriptions.Item label="Items">{order.items}</Descriptions.Item>
           <Descriptions.Item label="Tracking ID">{order.tracking || 'N/A'}</Descriptions.Item>
         </Descriptions>
-      </Card>
-
-      <Divider />
-
-      {/* Product Tabs */}
-      {order.products?.length > 0 && (
+      </Card></Col>
+       <Col span={12}>    {order.products?.length > 0 && (
         <>
-          <Title level={4} style={{ marginTop: 20 }}>Products in this Order</Title>
+       
 
           <Tabs defaultActiveKey="0" tabPosition="top" type="line">
             {order.products.map((product, index) => (
@@ -68,11 +67,11 @@ const OrderDetail = () => {
                         {product.media.map((file, i) =>
                           file.type === 'image' ? (
                             <Col span={24} key={i}>
-                              <Image width="100%" src={file.url} />
+                              <Image width="50%" src={file.url} />
                             </Col>
                           ) : (
                             <Col span={24} key={i}>
-                              <video width="100%" controls>
+                              <video width="50%" controls>
                                 <source src={file.url} type="video/mp4" />
                                 Your browser does not support the video tag.
                               </video>
@@ -115,7 +114,29 @@ const OrderDetail = () => {
             ))}
           </Tabs>
         </>
-      )}
+      )}</Col>
+    </Row>
+
+      {/* Order Info */}
+      {/* <Card    className='custum-pedding'       bordered={false}>
+        <Descriptions bordered column={1}>
+          <Descriptions.Item label="Customer">{order.customer}</Descriptions.Item>
+          <Descriptions.Item label="Order Date">{order.date}</Descriptions.Item>
+          <Descriptions.Item label="Status">
+            <Tag color={order.status === 'Pending' ? 'orange' : order.status === 'Shipped' ? 'green' : 'red'}>
+              {order.status}
+            </Tag>
+          </Descriptions.Item>
+          <Descriptions.Item label="Shipping Address">{order.address}</Descriptions.Item>
+          <Descriptions.Item label="Items">{order.items}</Descriptions.Item>
+          <Descriptions.Item label="Tracking ID">{order.tracking || 'N/A'}</Descriptions.Item>
+        </Descriptions>
+      </Card> */}
+
+ 
+
+      {/* Product Tabs */}
+    
     </div>
   );
 };

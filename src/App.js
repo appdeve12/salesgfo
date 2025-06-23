@@ -22,6 +22,12 @@ import UserAccess from './containers/userAccess/UserAccess';
 import ProductDetails from './containers/product/ProductDetails';
 import Sidebar from './containers/dashboard/layout/Sidebar';
 import OrderDetail from './containers/order/OrderDetail';
+import GSTReports from './containers/compliance/gst-reports';
+import TaxCompliance from './containers/compliance/tax';
+import BusinessPolicies from './containers/compliance/policies';
+import RefundPolicy from './containers/compliance/refund-policy';
+import InAppMessaging from './containers/communication/InAppMessaging';
+import SupportTickets from './containers/communication/SupportTickets';
 function App() {
   return (
     <Router>
@@ -36,17 +42,22 @@ function App() {
             <Route path="product" element={<Product />} />
                     <Route path="addproduct" element={<AddProduct />} />
                     <Route path="edit/:id" element ={<EditProduct/>}/>
-                                {/* <Route path="order" element ={<Order/>}/>
-                                      <Route path="payments" element ={<PaymentsAndSettlements/>}/>
-                                        <Route path="useraccess" element ={<UserAccess/>}/>
-                                                       <Route path="useraccess" element ={<UserAccess/>}/> */}
+                                <Route path="order" element ={<Order/>}/>
+                                      {/* <Route path="payments" element ={<PaymentsAndSettlements/>}/> */}
+                                        {/* <Route path="useraccess" element ={<UserAccess/>}/> */}
+                                                       {/* <Route path="useraccess" element ={<UserAccess/>}/> */}
                                       
-{/*                                       
-<Route path="/reviews" element={<ReviewManagement />} /> */}
-{/* <Route path="/product/:id" element={<ProductDetails />} /> */}
+                                      
+{/* <Route path="/reviews" element={<ReviewManagement />} /> */}
+<Route path="/product/:id" element={<ProductDetails />} />
 
-{/* <Route path="/side" element={<Sidebar />} /> */}
-        {/* <Route path="/orders/:orderId" element={<OrderDetail />} /> */}
+        <Route path="/orders/:orderId" element={<OrderDetail />} />
+          {/* <Route path="/compliance/gst-reports" element={<GSTReports />} />
+  <Route path="/compliance/tax" element={<TaxCompliance />} />
+  <Route path="/compliance/policies" element={<BusinessPolicies />} />
+  <Route path="/compliance/refund-policy" element={<RefundPolicy />} />
+   <Route path="/communication/in-app" element={<InAppMessaging />} />
+    <Route path="/communication/support" element={<SupportTickets />} /> */}
         </Route>
       </Routes>
     </Router>

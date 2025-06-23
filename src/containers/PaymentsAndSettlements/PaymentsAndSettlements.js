@@ -1,5 +1,7 @@
 import React from 'react';
-import { Tabs, Table, Card, Tag, Row, Col } from 'antd';
+import { Tabs, Table, Card, Tag, Row, Col, Button, Space, message } from 'antd';
+import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';
 
 const { TabPane } = Tabs;
 
@@ -16,6 +18,15 @@ const paymentHistoryData = [
   },
   {
     key: '2',
+    date: '2025-06-17',
+    orderId: 'ORD124',
+    products: ['Running Shoes'],
+    amount: '₹2,100',
+    method: 'UPI',
+    status: 'Pending',
+  },
+  {
+    key: '3',
     date: '2025-06-17',
     orderId: 'ORD124',
     products: ['Running Shoes'],
@@ -101,16 +112,58 @@ const commissionColumns = [
   },
 ];
 
-// ✅ Component
+// ✅ Main Component
 const PaymentsAndSettlements = () => {
+  // Excel export utility
+  const exportToExcel = (data, fileName) => {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, fileName);
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const dataBlob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    saveAs(dataBlob, `${fileName}.xlsx`);
+    message.success(`${fileName}.xlsx downloaded`);
+  };
+
+  // 📦 Export-ready settlement data
+  const settlementExportData = [
+    {
+      title: "This Week's Settlement",
+      amount: '₹12,500',
+      status: 'Processed',
+      date: '10–16 June',
+    },
+    {
+      title: "Yesterday's Settlement",
+      amount: '₹2,500',
+      status: 'Pending',
+      date: '18 June',
+    },
+    {
+      title: 'Next Scheduled Settlement',
+      amount: '₹6,000',
+      status: 'Upcoming',
+      date: '20 June 2025',
+    },
+  ];
+
   return (
-    <div style={{ padding: 24 }}>
+    <div>
       <h2 style={{ marginBottom: 24 }}>Payments & Settlements</h2>
 
       <Tabs defaultActiveKey="1" type="card">
-        {/* Tab 1: Payment History */}
         <TabPane tab="Payment History & Status" key="1">
-          <Card title="Payment History Table" bordered={false}>
+          <Card
+            title={
+              <Space>
+                Payment History Table
+                <Button onClick={() => exportToExcel(paymentHistoryData, 'Payment_History')} className="custumcss textwhite">
+                  Export to Excel
+                </Button>
+              </Space>
+            }
+            bordered={false}
+          >
             <Table
               dataSource={paymentHistoryData}
               columns={paymentColumns}
@@ -119,9 +172,18 @@ const PaymentsAndSettlements = () => {
           </Card>
         </TabPane>
 
-        {/* Tab 2: Commission & Fees */}
         <TabPane tab="Commission & Fees" key="2">
-          <Card title="Commission & Fees Breakdown" bordered={false}>
+          <Card
+            title={
+              <Space>
+                Commission & Fees Breakdown
+                <Button className="custumcss textwhite" onClick={() => exportToExcel(commissionData, 'Commission_Fees')} >
+                  Export to Excel
+                </Button>
+              </Space>
+            }
+            bordered={false}
+          >
             <Table
               dataSource={commissionData}
               columns={commissionColumns}
@@ -130,8 +192,19 @@ const PaymentsAndSettlements = () => {
           </Card>
         </TabPane>
 
-        {/* Tab 3: Payment Settlements */}
         <TabPane tab="Payment Settlements" key="3">
+          <Card
+            title={
+              <Space>
+                Settlements Overview
+                <Button className="custumcss textwhite" onClick={() => exportToExcel(settlementExportData, 'Settlements')} >
+                  Export to Excel
+                </Button>
+
+              </Space>
+            }
+            bordered={false}
+          />
           <Row gutter={16}>
             <Col span={8}>
               <Card title="This Week's Settlement" bordered={false}>

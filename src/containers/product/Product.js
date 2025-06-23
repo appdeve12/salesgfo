@@ -3,9 +3,12 @@ import { Table, Button, Space, Tag, message, Popconfirm, Upload } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { UploadOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
+import Spinner from '../../components/Spinner';
 
 const Product = () => {
   const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   // mock fetch
@@ -124,6 +127,14 @@ const Product = () => {
 navigate('/addproduct')
  }
 
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
@@ -140,6 +151,7 @@ navigate('/addproduct')
         </div>
       </div>
 <Table
+className='custum-pedding-cell'
   columns={columns}
   dataSource={products}
   rowKey="id"

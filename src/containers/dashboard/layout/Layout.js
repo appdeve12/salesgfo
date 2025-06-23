@@ -7,6 +7,13 @@ import {
   SettingOutlined,
   UserOutlined,
   LogoutOutlined,
+  UsergroupAddOutlined
+} from '@ant-design/icons';
+import {
+  FileTextOutlined,
+  AuditOutlined,
+
+  SwapOutlined,
 } from '@ant-design/icons';
 import Logo from "../../../assets/firesafety.webp";
 import { QuestionCircleOutlined, CustomerServiceOutlined } from '@ant-design/icons';
@@ -26,7 +33,7 @@ const Dashboard = () => {
 
   const profileMenu = (
     <Menu>
-         <Menu.Item key="subuser" icon={<UserOutlined />} >
+         <Menu.Item key="subuser" icon={<UsergroupAddOutlined />} >
         Multi User Access
       </Menu.Item>
       <Menu.Item key="profile" icon={<UserOutlined />} onClick={() => navigate('/profile')}>
@@ -55,33 +62,66 @@ const Dashboard = () => {
           <div className="logo" style={{ padding: '24px', fontWeight: 'bold', fontSize: '18px' }}>
             <img src={Logo} alt="Logo" />
           </div>
-          <Menu
-            className="custom-menu"
-            mode="inline"
-            selectedKeys={[currentPath]}
-          >
-            <Menu.Item
-              key="/home"
-              icon={<HomeOutlined />}
-              onClick={() => navigate('/home')}
-            >
-              Dashboard
-            </Menu.Item>
-            <Menu.Item
-              key="/product"
-              icon={<TeamOutlined />}
-              onClick={() => navigate('/product')}
-            >
-              Products
-            </Menu.Item>
-               <Menu.Item
-              key="/order"
-              icon={<TeamOutlined />}
-              onClick={() => navigate('/order')}
-            >
-              Orders
-            </Menu.Item>
-          </Menu>
+       <Menu
+  className="custom-menu"
+  mode="inline"
+  selectedKeys={[currentPath]}
+  defaultOpenKeys={['compliance']}
+  style={{ width: 250 }}
+  theme="light"
+>
+  <Menu.Item
+    key="/home"
+    icon={<HomeOutlined />}
+    onClick={() => navigate('/home')}
+  >
+    Dashboard
+  </Menu.Item>
+
+  <Menu.Item
+    key="/product"
+    icon={<TeamOutlined />}
+    onClick={() => navigate('/product')}
+  >
+    Products
+  </Menu.Item>
+
+  <Menu.Item
+    key="/order"
+    icon={<TeamOutlined />}
+    onClick={() => navigate('/order')}
+  >
+    Orders
+  </Menu.Item>
+
+  {/* <Menu.SubMenu
+    key="compliance"
+    icon={<AuditOutlined />}
+    title="Compliance & Legal Settings"
+  >
+    <Menu.Item key="/compliance/gst-reports" icon={<FileTextOutlined />} onClick={() => navigate('/compliance/gst-reports')}>
+      GST Reports
+    </Menu.Item>
+    <Menu.Item key="/compliance/tax" icon={<FileTextOutlined />} onClick={() => navigate('/compliance/tax')}>
+      Tax Compliance
+    </Menu.Item>
+    <Menu.Item key="/compliance/policies" icon={<SettingOutlined />} onClick={() => navigate('/compliance/policies')}>
+      Business Policies
+    </Menu.Item>
+    <Menu.Item key="/compliance/refund-policy" icon={<SwapOutlined />} onClick={() => navigate('/compliance/refund-policy')}>
+      Refund & Exchange
+    </Menu.Item>
+  </Menu.SubMenu> */}
+  <Menu.Item
+  key=""
+  icon={<TeamOutlined />}
+  // onClick={()=>navigate('/payments')}
+  
+  >
+Payments
+  </Menu.Item>
+</Menu>
+
           <div className='textwhite' style={{ position: 'absolute', bottom: 20, width: '100%', textAlign: 'center' }}>
             <Avatar size={48} src="https://i.pravatar.cc/150?img=10" />
             <div style={{ marginTop: 8, fontWeight: 500 }}>Anshika Singhal</div>
@@ -90,6 +130,7 @@ const Dashboard = () => {
   <Dropdown overlay={SettingMenu} trigger={['click']}>
     <Button icon={<SettingOutlined />} style={{ marginTop: 12 }} />
   </Dropdown>
+  
 </div>
 
     

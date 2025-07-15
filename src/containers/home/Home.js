@@ -13,7 +13,7 @@ const Home = () => {
   }, []);
 
   if (loading) {
-    return <Spinner />;
+    return <Spinner />
   }
 
   return (

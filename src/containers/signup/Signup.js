@@ -31,7 +31,7 @@ const Signup = () => {
 
   const steps = [
     {
-      title: 'Account Info',
+      title: 'Basic Info',
       content: (
         <Form layout="vertical" onFinish={next}>
           <Row gutter={16}>
@@ -46,9 +46,9 @@ const Signup = () => {
               </Form.Item>
             </Col>
           </Row>
-          <Row gutter={16}>
+              <Row gutter={16}>
             <Col span={12}>
-              <Form.Item label="Phone Number" name="phone" rules={[{ required: true }]}>
+               <Form.Item label="Alternate Email " name="alternateemail" rules={[{ required: true, type: 'email' }]}>
                 <Input size="large" style={inputStyle} />
               </Form.Item>
             </Col>
@@ -57,6 +57,14 @@ const Signup = () => {
                 <Input.Password size="large" style={inputStyle} />
               </Form.Item>
             </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="Phone Number" name="phone" rules={[{ required: true }]}>
+                <Input size="large" style={inputStyle} />
+              </Form.Item>
+            </Col>
+           
           </Row>
           <Form.Item>
             <Button type="primary" htmlType="submit" style={buttonStyle}>Next</Button>
@@ -81,7 +89,7 @@ const Signup = () => {
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Store Name" name="storeName" rules={[{ required: true }]}>
+              <Form.Item label="Store Name" name="storeName" rules={[{  }]}>
                 <Input size="large" style={inputStyle} />
               </Form.Item>
             </Col>

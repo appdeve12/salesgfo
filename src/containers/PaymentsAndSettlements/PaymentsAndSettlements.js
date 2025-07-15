@@ -2,7 +2,9 @@ import React from 'react';
 import { Tabs, Table, Card, Tag, Row, Col, Button, Space, message } from 'antd';
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
-
+import { useEffect,useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Spinner from '../../components/Spinner';
 const { TabPane } = Tabs;
 
 // 🧾 Payment history with product details
@@ -57,36 +59,7 @@ const commissionData = [
 ];
 
 // 📊 Payment history table columns
-const paymentColumns = [
-  {
-    title: 'Date',
-    dataIndex: 'date',
-  },
-  {
-    title: 'Order ID',
-    dataIndex: 'orderId',
-  },
-  {
-    title: 'Product(s)',
-    dataIndex: 'products',
-    render: (products) => products.map((p, i) => <Tag key={i}>{p}</Tag>),
-  },
-  {
-    title: 'Amount',
-    dataIndex: 'amount',
-  },
-  {
-    title: 'Method',
-    dataIndex: 'method',
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    render: (status) => (
-      <Tag color={status === 'Success' ? 'green' : 'orange'}>{status}</Tag>
-    ),
-  },
-];
+
 
 // 📊 Commission table columns
 const commissionColumns = [
@@ -114,6 +87,7 @@ const commissionColumns = [
 
 // ✅ Main Component
 const PaymentsAndSettlements = () => {
+  const navigate = useNavigate();
   // Excel export utility
   const exportToExcel = (data, fileName) => {
     const worksheet = XLSX.utils.json_to_sheet(data);
@@ -146,21 +120,74 @@ const PaymentsAndSettlements = () => {
       date: '20 June 2025',
     },
   ];
+ const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+useEffect(()=>{
+
+},[])
+  if (loading) {
+    return <Spinner />
+  }
+
+  const paymentColumns = [
+  {
+    title: 'Date',
+    dataIndex: 'date',
+  },
+  {
+    title: 'Order ID',
+    dataIndex: 'orderId',
+  },
+  {
+    title: 'Product(s)',
+    dataIndex: 'products',
+    render: (products) => products.map((p, i) => <Tag key={i}>{p}</Tag>),
+  },
+  {
+    title: 'Amount',
+    dataIndex: 'amount',
+  },
+  {
+    title: 'Method',
+    dataIndex: 'method',
+  },
+  {
+    title: 'Status',
+    dataIndex: 'status',
+    render: (status) => (
+      <Tag color={status === 'Success' ? 'green' : 'orange'}>{status}</Tag>
+    ),
+  },
+  {
+  title: 'Action',
+  render: (_, record) => (
+    <Button
+      type="link"
+      onClick={() => navigate(`/payments/details/${record.orderId}`, { state: { order: record } })}
+    >
+      View Details
+    </Button>
+  ),
+}
+
+];
 
   return (
     <div>
       <h2 style={{ marginBottom: 24 }}>Payments & Settlements</h2>
 
       <Tabs defaultActiveKey="1" type="card">
-        <TabPane tab="Payment History & Status" key="1">
+        <TabPane tab="Payment History & Status" key="1" >
           <Card
             title={
-              <Space>
-                Payment History Table
+             
                 <Button onClick={() => exportToExcel(paymentHistoryData, 'Payment_History')} className="custumcss textwhite">
                   Export to Excel
                 </Button>
-              </Space>
+         
             }
             bordered={false}
           >
@@ -171,16 +198,18 @@ const PaymentsAndSettlements = () => {
             />
           </Card>
         </TabPane>
+        
+        
 
         <TabPane tab="Commission & Fees" key="2">
           <Card
             title={
-              <Space>
-                Commission & Fees Breakdown
+           
+                
                 <Button className="custumcss textwhite" onClick={() => exportToExcel(commissionData, 'Commission_Fees')} >
                   Export to Excel
                 </Button>
-              </Space>
+         
             }
             bordered={false}
           >
@@ -191,17 +220,17 @@ const PaymentsAndSettlements = () => {
             />
           </Card>
         </TabPane>
+     
+
 
         <TabPane tab="Payment Settlements" key="3">
           <Card
             title={
-              <Space>
-                Settlements Overview
+          
                 <Button className="custumcss textwhite" onClick={() => exportToExcel(settlementExportData, 'Settlements')} >
                   Export to Excel
                 </Button>
 
-              </Space>
             }
             bordered={false}
           />

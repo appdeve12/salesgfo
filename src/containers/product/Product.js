@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Space, Tag, message, Popconfirm, Upload } from 'antd';
+import {
+  Table,
+  Button,
+  Space,
+  Tag,
+  message,
+  Popconfirm,
+  Upload,
+  Input
+} from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { UploadOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
@@ -7,8 +16,8 @@ import Spinner from '../../components/Spinner';
 
 const Product = () => {
   const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
   // mock fetch
@@ -36,7 +45,6 @@ const Product = () => {
         inStock: false,
         sku: 'NIKE567',
       },
-      
     ];
     setProducts(mockProducts);
   }, []);
@@ -56,7 +64,6 @@ const Product = () => {
       const sheet = workbook.Sheets[sheetName];
       const parsedData = XLSX.utils.sheet_to_json(sheet);
 
-      // Optional: Add ID and inStock fields
       const formattedData = parsedData.map((item, index) => ({
         id: (products.length + index + 1).toString(),
         inStock: item.quantity > 0,
@@ -67,8 +74,7 @@ const Product = () => {
       message.success('Bulk products uploaded successfully');
     };
     reader.readAsArrayBuffer(file);
-    return false; // Prevent auto upload
-
+    return false;
   };
 
   const uploadProps = {
@@ -76,6 +82,7 @@ const Product = () => {
     showUploadList: false,
     accept: '.xlsx, .xls, .csv',
   };
+
   const columns = [
     { title: 'Title', dataIndex: 'title', key: 'title' },
     { title: 'Description', dataIndex: 'description', key: 'description' },
@@ -83,7 +90,7 @@ const Product = () => {
     { title: 'Category', dataIndex: 'category', key: 'category' },
     { title: 'Price (₹)', dataIndex: 'price', key: 'price' },
     { title: 'SKU', dataIndex: 'sku', key: 'sku' },
-        { title: 'Handling Time', dataIndex: 'handlingtime', key: 'handlingtime' },
+    { title: 'Handling Time', dataIndex: 'handlingtime', key: 'handlingtime' },
     {
       title: 'Stock',
       dataIndex: 'inStock',
@@ -99,33 +106,37 @@ const Product = () => {
       title: 'Actions',
       key: 'actions',
       render: (_, record) => (
-         <Space>
-      <Button
-        onClick={(e) => {
-          e.stopPropagation(); // 🔒 prevent row click
-          navigate(`/edit/${record.id}`);
-        }}
-      >
-        Edit
-      </Button>
-
-      <Popconfirm
-        title="Sure to delete?"
-        onConfirm={(e) => {
-          e.stopPropagation(); // 🔒 prevent row click
-          handleDelete(record.id);
-        }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <Button danger>Delete</Button>
-      </Popconfirm>
-    </Space>
+        <Space>
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/edit/${record.id}`);
+            }}
+          >
+            Edit
+          </Button>
+          <Popconfirm
+            title="Sure to delete?"
+            onConfirm={(e) => {
+              e.stopPropagation();
+              handleDelete(record.id);
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Button danger>Delete</Button>
+          </Popconfirm>
+        </Space>
       ),
     },
   ];
- const AddProduct=()=>{
-navigate('/addproduct')
- }
+
+  const AddProduct = () => {
+    navigate('/addproduct');
+  };
+
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
@@ -137,10 +148,24 @@ navigate('/addproduct')
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: 10,
+        }}
+      >
         <h2>All Products</h2>
-        <div style={{ display: 'flex', gap: 10 }}>
-          <Button className="custumcss textwhite" onClick={()=>AddProduct()}>
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          <Input.Search
+            placeholder="Search by product name"
+            allowClear
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ width: 250 }}
+          />
+          <Button className="custumcss textwhite" onClick={AddProduct}>
             Add Product
           </Button>
           <Upload {...uploadProps}>
@@ -150,18 +175,18 @@ navigate('/addproduct')
           </Upload>
         </div>
       </div>
-<Table
-className='custum-pedding-cell'
-  columns={columns}
-  dataSource={products}
-  rowKey="id"
-  pagination={{ pageSize: 5 }}
-  onRow={(record) => ({
-    onClick: () => navigate(`/product/${record.id}`),
-    style: { cursor: 'pointer' },
-  })}
-/>
 
+      <Table
+        className="custum-pedding-cell"
+        columns={columns}
+        dataSource={filteredProducts}
+        rowKey="id"
+        pagination={{ pageSize: 5 }}
+        onRow={(record) => ({
+          onClick: () => navigate(`/product/${record.id}`),
+          style: { cursor: 'pointer' },
+        })}
+      />
     </>
   );
 };

@@ -24,18 +24,20 @@ const OrderDetail = () => {
   const navigate = useNavigate();
 
   const order = location.state?.order;
+const breadcrumbItems = [
+  {
+    title: <Link to="/order">Orders</Link>,
+  },
+  {
+    title: `Order Details - ${order.orderId}`,
+  },
+];
 
   if (!order) return <p>Order not found.</p>;
 
   return (
     <div>
-               <Breadcrumb style={{ marginBottom: 16 }}>
-    
-      <Breadcrumb.Item>
-        <Link to="/order">Orders</Link>
-      </Breadcrumb.Item>
-      <Breadcrumb.Item>Order Details - ${order.orderId}</Breadcrumb.Item>
-    </Breadcrumb> 
+             <Breadcrumb style={{ marginBottom: 16 }} items={breadcrumbItems} />
     <Row gutter={12}>
       <Col span={12}><Card    className='custum-pedding'       bordered={false}>
         <Descriptions bordered column={1}>
@@ -83,7 +85,7 @@ const OrderDetail = () => {
 
                     {/* Info */}
                     <Col span={14}>
-                      <Descriptions bordered column={1} labelStyle={{ fontWeight: 600 }}>
+                      <Descriptions bordered column={1} style={{ fontWeight: 600 }}>
                         <Descriptions.Item label="SKU">{product.sku}</Descriptions.Item>
                         <Descriptions.Item label="Brand">{product.brand}</Descriptions.Item>
                         <Descriptions.Item label="Category">{product.category}</Descriptions.Item>

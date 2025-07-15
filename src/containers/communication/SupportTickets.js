@@ -26,7 +26,7 @@ const initialData = [
         status: 'Open',
         priority: 'High',
         createdAt: '2025-06-18',
-        agent: 'Support Team A',
+    
         description: 'Customer claims that the order status hasn’t updated in 2 days.',
     },
     {
@@ -36,7 +36,7 @@ const initialData = [
         status: 'Resolved',
         priority: 'Medium',
         createdAt: '2025-06-15',
-        agent: 'Support Team B',
+
         description: 'Buyer requested a refund but no amount was credited.',
     },
     {
@@ -46,7 +46,7 @@ const initialData = [
         status: 'In Progress',
         priority: 'Low',
         createdAt: '2025-06-16',
-        agent: 'Support Team C',
+     
         description: 'Item stuck in transit for more than 5 days.',
     },
 ];
@@ -65,7 +65,10 @@ const priorityColors = {
 
 const SupportTickets = () => {
     const [statusFilter, setStatusFilter] = useState('All');
-    const [filteredData, setFilteredData] = useState(initialData);
+
+const [addModal, setAddModal] = useState(false);
+const [tickets, setTickets] = useState(initialData); // replacing initialData directly
+const [filteredData, setFilteredData] = useState(initialData); // Keep for filter/search
 
     const [viewModal, setViewModal] = useState(false);
     const [replyModal, setReplyModal] = useState(false);
@@ -84,6 +87,24 @@ const SupportTickets = () => {
         setReplyModal(false);
         setReplyMessage('');
     };
+const handleAddTicket = (values) => {
+    const newTicket = {
+        key: tickets.length + 1,
+        id: `TCK-${Math.floor(10000 + Math.random() * 90000)}`,
+        issue: values.subject,
+        description: values.description,
+        status: 'Open',
+        priority: 'Low',
+        createdAt: new Date().toISOString().split('T')[0],
+        agent: 'Unassigned',
+        attachment: values.attachment?.file?.name || '',
+    };
+    const updated = [newTicket, ...tickets];
+    setTickets(updated);
+    setFilteredData(updated);
+    setAddModal(false);
+    message.success('New ticket added');
+};
 
     const columns = [
         {
@@ -109,10 +130,7 @@ const SupportTickets = () => {
             title: 'Created At',
             dataIndex: 'createdAt',
         },
-        {
-            title: 'Assigned To',
-            dataIndex: 'agent',
-        },
+   
         {
             title: 'Action',
             render: (_, record) => (
@@ -130,7 +148,7 @@ const SupportTickets = () => {
                     <Button
                         icon={<MessageOutlined />}
                         size="small"
-                        type="primary"
+                   className="custumcss textwhite"
                         onClick={() => {
                             setSelectedTicket(record);
                             setReplyModal(true);
@@ -169,6 +187,9 @@ const SupportTickets = () => {
                     <Option value="In Progress">In Progress</Option>
                     <Option value="Resolved">Resolved</Option>
                 </Select>
+                <Button className="custumcss textwhite"onClick={() => setAddModal(true)}>
+    + Add Ticket
+</Button>
             </Space>
 
             <Table
@@ -213,6 +234,41 @@ const SupportTickets = () => {
                     </Form.Item>
                 </Form>
             </Modal>
+            <Modal
+    title="Add New Ticket"
+    open={addModal}
+    onCancel={() => setAddModal(false)}
+    footer={null}
+>
+    <Form layout="vertical" onFinish={handleAddTicket}>
+        <Form.Item
+            label="Subject"
+            name="subject"
+            rules={[{ required: true, message: 'Please enter a subject' }]}
+        >
+            <Input placeholder="Enter subject" />
+        </Form.Item>
+
+        <Form.Item
+            label="Description"
+            name="description"
+            rules={[{ required: true, message: 'Please enter a description' }]}
+        >
+            <TextArea rows={4} placeholder="Enter description" />
+        </Form.Item>
+
+        <Form.Item label="Attachment" name="attachment" valuePropName="file">
+            <Input type="file" />
+        </Form.Item>
+
+        <Form.Item>
+            <Button className='custumcss textwhite' htmlType="submit">
+                Submit Ticket
+            </Button>
+        </Form.Item>
+    </Form>
+</Modal>
+
         </Card>
     );
 };

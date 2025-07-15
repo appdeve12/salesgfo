@@ -49,7 +49,10 @@ const UserAccess = () => {
 
   return (
     <div>
-      <Button type="primary" onClick={showModal}>Add Sub-User</Button>
+      <div className='commonclass'>
+        <Button className='backgroundclor textwhite' onClick={showModal}>Add Sub-User</Button>
+      </div>
+
 
       <Table columns={columns} dataSource={users} rowKey="id" style={{ marginTop: 20 }} />
 
@@ -68,8 +71,10 @@ const UserAccess = () => {
           </Form.Item>
           <Form.Item label="Role" name="role" initialValue="employee">
             <Select>
-              <Option value="employee">Employee</Option>
-              <Option value="admin">Admin</Option>
+              <Option value="manager">Manager</Option>
+              <Option value="inventory">Inventory</Option>
+              <Option value="CustomerSupport">CustomerSupport</Option>
+              <Option value="Finance">Finance</Option>
             </Select>
           </Form.Item>
 
@@ -79,6 +84,10 @@ const UserAccess = () => {
               <Option value="editProducts">Edit Products</Option>
               <Option value="accessPayouts">Access Payouts</Option>
               <Option value="manageUsers">Manage Users</Option>
+              <Option value="viewUsers">View User</Option>
+              <Option value="editUser">Edit User</Option>
+              <Option value="accessUser">Access User</Option>
+
             </Select>
           </Form.Item>
 
@@ -87,7 +96,7 @@ const UserAccess = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button htmlType="submit" type="primary" block>
+            <Button htmlType="submit" className='backgroundclor textwhite' block>
               Add User
             </Button>
           </Form.Item>

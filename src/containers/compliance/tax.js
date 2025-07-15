@@ -17,7 +17,7 @@ const TaxCompliance = () => (
         <Input style={{ maxWidth: 400 }} />
       </Form.Item>
       <Form.Item>
-        <Button type="primary">Save Tax Details</Button>
+        <Button className='custumcss textwhite'>Save Tax Details</Button>
       </Form.Item>
     </Form>
   </Card>

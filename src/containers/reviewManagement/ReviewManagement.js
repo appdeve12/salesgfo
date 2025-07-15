@@ -77,7 +77,7 @@ const ReviewManagement = () => {
             style={{ width: 200 }}
           />
           <Button
-            type="primary"
+            className="custumcss textwhite"
             icon={<SendOutlined />}
             size="small"
             onClick={() => handleReply(record.customer)}

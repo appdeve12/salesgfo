@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Card, Typography, Input, Button, List, Select, Avatar } from 'antd';
+import { Card, Typography, Input, Button, List, Select, Avatar, Row, Col } from 'antd';
 import { SendOutlined, UserOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
@@ -47,8 +47,15 @@ const InAppMessaging = () => {
   };
 
   return (
-    <Card>
-      <Title level={4}>In-App Messaging</Title>
+    <Card
+      style={{
+
+        margin: 'auto',
+
+      }}
+      bodyStyle={{ padding: 24 }}
+    >
+      <Title level={4}>💬 In-App Messaging</Title>
 
       {/* Buyer Selection */}
       <Select
@@ -65,7 +72,16 @@ const InAppMessaging = () => {
       </Select>
 
       {/* Chat List */}
-      <div style={{ maxHeight: 300, overflowY: 'auto', marginBottom: 20, padding: '0 8px' }}>
+      <div
+        style={{
+          maxHeight: 350,
+          overflowY: 'auto',
+          marginBottom: 20,
+          padding: '0 8px',
+          background: '#fafafa',
+          borderRadius: 8,
+        }}
+      >
         <List
           dataSource={messageList}
           renderItem={(msg) => (
@@ -73,60 +89,65 @@ const InAppMessaging = () => {
               style={{
                 justifyContent: msg.sender === 'You' ? 'flex-end' : 'flex-start',
                 textAlign: msg.sender === 'You' ? 'right' : 'left',
+                padding: '8px 0',
               }}
             >
-              <List.Item.Meta
-                avatar={<Avatar icon={<UserOutlined />} />}
-                title={
-                  <span style={{ fontWeight: 'bold' }}>
-                    {msg.sender}{' '}
-                    <span style={{ fontWeight: 'normal', color: '#999', fontSize: 12 }}>
-                      • {msg.time}
-                    </span>
-                  </span>
-                }
-                description={
-                  <span
+              <div style={{ display: 'flex', alignItems: 'flex-end', flexDirection: msg.sender === 'You' ? 'row-reverse' : 'row' }}>
+                {msg.sender !== 'You' && (
+                  <Avatar
+                    icon={<UserOutlined />}
+                    style={{ marginRight: 8 }}
+                  />
+                )}
+                <div>
+                  <div
+                    className="custumcss textwhite"
                     style={{
-                      display: 'inline-block',
-                      padding: '8px 12px',
-                      borderRadius: 12,
-                      backgroundColor: msg.sender === 'You' ? '#e6f7ff' : '#f5f5f5',
+                      padding: '10px 14px',
+                      borderRadius: 16,
                       maxWidth: 300,
                       wordWrap: 'break-word',
+                      fontSize: 14,
                     }}
                   >
                     {msg.text}
-                  </span>
-                }
-              />
+                  </div>
+                  <div style={{ fontSize: 11, color: '#999', marginTop: 4 }}>
+                    {msg.sender} • {msg.time}
+                  </div>
+                </div>
+              </div>
             </List.Item>
           )}
         />
         <div ref={messageEndRef} />
       </div>
 
-      {/* Message Input */}
-      <TextArea
-        rows={2}
-        placeholder="Type your message..."
-        value={newMsg}
-        onChange={(e) => setNewMsg(e.target.value)}
-        onPressEnter={(e) => {
-          if (!e.shiftKey) {
-            e.preventDefault();
-            handleSend();
-          }
-        }}
-      />
-      <Button
-        type="primary"
-        icon={<SendOutlined />}
-        onClick={handleSend}
-        style={{ marginTop: 10 }}
-      >
-        Send
-      </Button>
+      {/* Message Input & Send Button */}
+      <Row gutter={8}>
+        <Col flex="auto">
+          <TextArea
+            rows={2}
+            placeholder="Type your message..."
+            value={newMsg}
+            onChange={(e) => setNewMsg(e.target.value)}
+            onPressEnter={(e) => {
+              if (!e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+          />
+        </Col>
+        <Col>
+          <Button
+            className="custumcss textwhite"
+            icon={<SendOutlined />}
+            onClick={handleSend}
+            style={{ height: '100%' }}
+          />
+        </Col>
+      </Row>
     </Card>
   );
 };

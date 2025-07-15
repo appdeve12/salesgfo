@@ -53,7 +53,7 @@ const Login = () => {
           <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
             <Link to="/forgot-password" style={linkStyle}>Forgot your password?</Link>
             <div style={{ marginTop: 10 }}>
-              New to Amazon? <Link to="/signup" style={linkStyle}>Create your Fire Safety account</Link>
+              New to Fire Safety? <Link to="/signup" style={linkStyle}>Create your Fire Safety account</Link>
             </div>
           </Form.Item>
         </Form>
@@ -68,7 +68,7 @@ const containerStyle = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  // background: 'linear-gradient(to right, #f97316, #ef4444)', 
+  // background: 'linear-gradient(to right,rgba(19, 13, 10, 0.86),rgb(218, 88, 88))', 
   fontFamily: `'Segoe UI', 'Roboto', sans-serif`,
 };
 

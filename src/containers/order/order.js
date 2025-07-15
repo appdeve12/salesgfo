@@ -1,15 +1,22 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table, Tabs, Tag, Button, Space, Modal, Input, message } from 'antd';
+import { Table, Tabs, Tag, Button, Space, Modal, Input, message, DatePicker } from 'antd';
 import { PrinterOutlined, EyeOutlined, ReloadOutlined, TruckOutlined } from '@ant-design/icons';
 import html2pdf from 'html2pdf.js';
 import Spinner from '../../components/Spinner';
+import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
+const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
 
 const Order = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [dateRange, setDateRange] = useState([]);
 
   const [orders, setOrders] = useState([
     {
@@ -20,29 +27,7 @@ const Order = () => {
       date: '2025-06-17',
       address: 'New Delhi, India',
       items: '1x Laptop, 2x Mouse',
-      tracking: '',
-      products: [{
-        _id: 890,
-        title: 'Wireless Earbuds',
-        sku: 'SKU123456',
-        handlingtime: '2025-06-25',
-        restockdate: '2025-07-10',
-        description: 'High-quality wireless earbuds with noise cancellation.',
-        price: 2499,
-        discount: 10,
-        category: 'electronics',
-        brand: 'SoundTech',
-        quantity: 50,
-        inStock: true,
-        tmBrandName: 'SoundTech™',
-        tmReferenceNo: 'TM987654',
-        media: [
-          { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
-          { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
-          { type: 'video', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' }
-        ]
-      }]
-
+      tracking: ''
     },
     {
       key: '2',
@@ -52,51 +37,7 @@ const Order = () => {
       date: '2025-06-16',
       address: 'Mumbai, India',
       items: '1x Monitor',
-      tracking: 'AWB12345678',
-      products: [
-        {
-          _id: 786,
-          title: 'Wireless Earbuds',
-          sku: 'SKU123456',
-          handlingtime: '2025-06-25',
-          restockdate: '2025-07-10',
-          description: 'High-quality wireless earbuds with noise cancellation.',
-          price: 2499,
-          discount: 10,
-          category: 'electronics',
-          brand: 'SoundTech',
-          quantity: 50,
-          inStock: true,
-          tmBrandName: 'SoundTech™',
-          tmReferenceNo: 'TM987654',
-          media: [
-            { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
-            { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
-            { type: 'video', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' }
-          ]
-        },
-        {
-          _id: 7866,
-          title: 'Wireless Earbuds',
-          sku: 'SKU123456',
-          handlingtime: '2025-06-25',
-          restockdate: '2025-07-10',
-          description: 'High-quality wireless earbuds with noise cancellation.',
-          price: 2499,
-          discount: 10,
-          category: 'electronics',
-          brand: 'SoundTech',
-          quantity: 50,
-          inStock: true,
-          tmBrandName: 'SoundTech™',
-          tmReferenceNo: 'TM987654',
-          media: [
-            { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
-            { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
-            { type: 'video', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' }
-          ]
-        },
-      ]
+      tracking: 'AWB12345678'
     },
     {
       key: '3',
@@ -106,28 +47,7 @@ const Order = () => {
       date: '2025-06-17',
       address: 'New Delhi, India',
       items: '1x Laptop, 2x Mouse',
-      tracking: '',
-      products: [{
-        _id: 78,
-        title: 'Wireless Earbuds',
-        sku: 'SKU123456',
-        handlingtime: '2025-06-25',
-        restockdate: '2025-07-10',
-        description: 'High-quality wireless earbuds with noise cancellation.',
-        price: 2499,
-        discount: 10,
-        category: 'electronics',
-        brand: 'SoundTech',
-        quantity: 50,
-        inStock: true,
-        tmBrandName: 'SoundTech™',
-        tmReferenceNo: 'TM987654',
-        media: [
-          { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
-          { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
-          { type: 'video', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' }
-        ]
-      }]
+      tracking: ''
     },
     {
       key: '4',
@@ -137,28 +57,7 @@ const Order = () => {
       date: '2025-06-16',
       address: 'Mumbai, India',
       items: '1x Monitor',
-      tracking: 'AWB12345678',
-      products: [{
-        _id: 567,
-        title: 'Wireless Earbuds',
-        sku: 'SKU123456',
-        handlingtime: '2025-06-25',
-        restockdate: '2025-07-10',
-        description: 'High-quality wireless earbuds with noise cancellation.',
-        price: 2499,
-        discount: 10,
-        category: 'electronics',
-        brand: 'SoundTech',
-        quantity: 50,
-        inStock: true,
-        tmBrandName: 'SoundTech™',
-        tmReferenceNo: 'TM987654',
-        media: [
-          { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
-          { type: 'image', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' },
-          { type: 'video', url: 'https://m.media-amazon.com/images/I/61ZE0ilkdcL._AC_UF1000,1000_QL80_.jpg' }
-        ]
-      }]
+      tracking: 'AWB12345678'
     },
   ]);
 
@@ -205,24 +104,25 @@ const Order = () => {
     message.success('Tracking ID added');
   };
 
+const filterByDate = (data) => {
+  if (!dateRange || dateRange.length !== 2) return data;
+
+  const [start, end] = dateRange;
+  return data.filter(order => {
+    const orderDate = dayjs(order.date, 'YYYY-MM-DD');
+    return orderDate.isSameOrAfter(start, 'day') && orderDate.isSameOrBefore(end, 'day');
+  });
+};
+
   const columns = [
-    {
-      title: 'Order ID',
-      dataIndex: 'orderId',
-    },
-    {
-      title: 'Customer',
-      dataIndex: 'customer',
-    },
+    { title: 'Order ID', dataIndex: 'orderId' },
+    { title: 'Customer', dataIndex: 'customer' },
     {
       title: 'Status',
       dataIndex: 'status',
       render: status => <Tag color={status === 'Pending' ? 'orange' : status === 'Cancelled' ? 'red' : 'green'}>{status}</Tag>,
     },
-    {
-      title: 'Date',
-      dataIndex: 'date',
-    },
+    { title: 'Date', dataIndex: 'date' },
     {
       title: 'Actions',
       render: (_, record) => (
@@ -249,109 +149,49 @@ const Order = () => {
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
-  if (loading) {
-    return <Spinner />;
-  }
+  const tabItems = [
+    {
+      key: '1',
+      label: 'New Orders',
+      children: (
+        <Table
+          dataSource={filterByDate(orders.filter(o => o.status === 'Pending'))}
+          columns={columns}
+          rowKey="key"
+        />
+      ),
+    },
+    {
+      key: '2',
+      label: 'Processed Orders',
+      children: (
+        <Table
+          dataSource={filterByDate(orders.filter(o => o.status === 'Shipped'))}
+          columns={columns}
+          rowKey="key"
+        />
+      ),
+    },
+    {
+      key: '3',
+      label: 'Returns / Cancellations',
+      children: (
+        <Table
+          dataSource={filterByDate(orders.filter(o => o.status === 'Cancelled'))}
+          columns={columns}
+          rowKey="key"
+        />
+      ),
+    },
+  ];
+
+  if (loading) return <Spinner />;
 
   return (
     <div>
       <h2>Order Management</h2>
-      <Tabs defaultActiveKey="1">
-        <TabPane tab="New Orders" key="1">
-
-          <Table
-            dataSource={orders.filter(o => o.status === 'Pending')}
-            columns={columns}
-            onRow={(record) => ({
-              onClick: () => navigate(`/orders/${record.orderId}`, { state: { order: record } }),
-              style: { cursor: 'pointer' },
-            })}
-          />
-
-        </TabPane>
-        <TabPane tab="Processed Orders" key="2">
-          <Table
-            dataSource={orders.filter(o => o.status === 'Shipped')}
-            columns={columns}
-            onRow={(record) => ({
-              onClick: () => navigate(`/orders/${record.orderId}`, { state: { order: record } }),
-              style: { cursor: 'pointer' },
-            })}
-          />
-
-        </TabPane>
-        <TabPane tab="Returns / Cancellations" key="3">
-          <Table
-            dataSource={orders.filter(o => o.status === 'Cancelled')}
-            columns={columns}
-            onRow={(record) => ({
-              onClick: () => navigate(`/orders/${record.orderId}`, { state: { order: record } }),
-              style: { cursor: 'pointer' },
-            })}
-          />
-
-        </TabPane>
-      </Tabs>
-
-      {visibleOrder && (
-        <div style={{ display: 'none' }}>
-          <div ref={componentRef} style={{ padding: 20, fontFamily: 'Arial', maxWidth: 600 }}>
-            <h2 style={{ textAlign: 'center' }}>Order No. - {visibleOrder.orderId}</h2>
-
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div>
-                <h4>Sold By:</h4>
-                <p>KAY KAY OVERSEAS CORPORATION<br />
-                  Gurgaon, Haryana, 122503, IN<br />
-                  PAN No: AACFK0693D<br />
-                  GST: 06AACFK0693D1ZN</p>
-              </div>
-              <div>
-                <h4>Billing Address:</h4>
-                <p>{visibleOrder.customer}<br />{visibleOrder.address}</p>
-              </div>
-              <div>
-                <h4>Shipping Address:</h4>
-                <p>{visibleOrder.customer}<br />{visibleOrder.address}</p>
-              </div>
-            </div>
-
-            <p><b>Order Date:</b> {visibleOrder.date}</p>
-            <p><b>Invoice Date:</b> {visibleOrder.date}</p>
-
-            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 20 }} border="1">
-              <thead>
-                <tr>
-                  <th>Description</th>
-                  <th>Unit Price</th>
-                  <th>Qty</th>
-                  <th>Tax</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{visibleOrder.items}</td>
-                  <td>₹392.37</td>
-                  <td>1</td>
-                  <td>₹106.63</td>
-                  <td>₹699.00</td>
-                </tr>
-                <tr>
-                  <td colSpan="4" style={{ textAlign: 'right' }}><b>Total Amount:</b></td>
-                  <td><b>₹699.00</b></td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div style={{ marginTop: 40 }}>
-              <p><b>Authorized Signatory</b></p>
-              <img src="https://i.ibb.co/jJM4x4b/signature.png" alt="Signature" width="120" />
-            </div>
-          </div>
-        </div>
-      )}
-
+      <RangePicker onChange={setDateRange} style={{ marginBottom: 16 }} />
+      <Tabs defaultActiveKey="1" items={tabItems} />
 
       {/* Tracking ID Modal */}
       <Modal

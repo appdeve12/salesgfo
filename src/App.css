@@ -35,6 +35,36 @@ background-color: #627ea1;
 .backtrans{
   background: transparent;
 }
+.custom-menu .ant-menu-submenu-title {
+    color: white !important;
+  font-weight: bold;
+  padding: 12px 24px !important;
+  margin: 8px 12px;
+
+  transition: all 0.3s ease;
+  font-size: 18px;
+    width: 84%;
+}
+
+.custom-menu .ant-menu-submenu .ant-menu-item {
+color: white !important;
+  font-weight: bold;
+  padding: 12px 24px !important;
+  margin: 16px 12px;
+  /* border-radius: 8px; */
+  transition: all 0.3s ease;
+  font-size: 18px;
+    width: 84%;
+}
+
+/* Optional: submenu selected item */
+.custom-menu .ant-menu-submenu .ant-menu-item-selected {
+  background-color: #ffffff;
+  color: rgb(58 71 100) !important;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 .custom-menu {
   background-color: transparent;
   border-right: none;
@@ -45,7 +75,7 @@ background-color: #627ea1;
   font-weight: bold;
   padding: 12px 24px !important;
   margin: 8px 12px;
-  /* border-radius: 8px; */
+
   transition: all 0.3s ease;
   font-size: 18px;
     width: 84%;
@@ -57,7 +87,14 @@ background-color: #627ea1;
 .custum-pedding-cell .ant-table-cell{
       padding: 9px 9px !important;
 }
+.ant-menu-submenu {
+  
 
+    
+}
+.iconcustum .ant-steps-item-icon{
+  background-color: #627ea1;
+}
 
 .custom-menu .ant-menu-item-selected {
   background-color: #ffffff;
@@ -77,6 +114,13 @@ background-color: #627ea1;
 .textred{
 color: rgb(58 71 100);
    /* color: rgb(159 0 0)  */
+}
+.backgroundclor{
+  background-color: #627ea1;
+}
+.commonclass{
+      display: flex;
+    justify-content: end;
 }
 @keyframes App-logo-spin {
   from {

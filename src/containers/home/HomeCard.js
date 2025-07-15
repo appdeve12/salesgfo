@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from 'antd';
-import { DollarOutlined, RiseOutlined, FileTextOutlined,ShoppingCartOutlined } from '@ant-design/icons';
+import { DollarOutlined, RiseOutlined, FileTextOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 
 const cardStyle = {
   flex: 1,
@@ -14,8 +14,8 @@ const titleStyle = {
   fontWeight: 600,
   display: 'flex',
   alignItems: 'center',
-    justifyContent: 'space-between'
-    
+  justifyContent: 'space-between'
+
 };
 
 const valueStyle = {
@@ -25,7 +25,7 @@ const valueStyle = {
 };
 
 const changeStyle = {
-  
+
   fontWeight: 500,
 };
 
@@ -41,47 +41,47 @@ const HomeCard = () => {
       }}
     >
       {/* Total Sales */}
-      <Card className="custumcss textwhite"style={{ ...cardStyle ,padding:"0px"}}>
+      <Card className="custumcss textwhite" style={{ ...cardStyle, padding: "0px" }}>
         <div style={titleStyle}>
-            Total Sales
-          <DollarOutlined style={{  fontSize: 20 }} />
-          
+          Total Sales
+          <DollarOutlined style={{ fontSize: 20 }} />
+
         </div>
         <div style={{ ...valueStyle, }}>$1,200,550</div>
         <div style={changeStyle}>▲ +38% from last month</div>
       </Card>
-  <Card className="custumcss textwhite"style={{ ...cardStyle ,padding:"0px"}}>
+      <Card className="custumcss textwhite" style={{ ...cardStyle, padding: "0px" }}>
         <div style={titleStyle}>
-            New Order
-          <DollarOutlined style={{  fontSize: 20 }} />
-          
+          New Order
+          <DollarOutlined style={{ fontSize: 20 }} />
+
         </div>
         <div style={{ ...valueStyle, }}>1000 +</div>
         {/* <div style={changeStyle}>▲ +38% from last month</div> */}
-     
+
       </Card>
-      
-   
-   
-      
-      <Card className="custumcss textwhite" style={{ ...cardStyle ,padding:"0px" }}>
+
+
+
+
+      <Card className="custumcss textwhite" style={{ ...cardStyle, padding: "0px" }}>
         <div style={titleStyle}>
-             Tax Report
+          Tax Report
           <FileTextOutlined style={{ fontSize: 20 }} />
-         
+
         </div>
         <p style={{ fontSize: 16, marginTop: 12 }}>
           Submit your <strong>yearly tax report</strong> by <b>Oct 20</b>.
-        </p> 
+        </p>
       </Card>
-         <Card className="custumcss textwhite" style={{ ...cardStyle ,padding:"0px" }}>
+      <Card className="custumcss textwhite" style={{ ...cardStyle, padding: "0px" }}>
         <div style={titleStyle}>
-            Total Orders
-          <ShoppingCartOutlined  style={{ fontSize: 20 }} />
-         
+          Total Orders
+          <ShoppingCartOutlined style={{ fontSize: 20 }} />
+
         </div>
-          <div style={{ ...valueStyle,  }}>32,480</div>
-  <div style={changeStyle}>▲ +28% from last month</div>
+        <div style={{ ...valueStyle, }}>32,480</div>
+        <div style={changeStyle}>▲ +28% from last month</div>
       </Card>
     </div>
   );

@@ -29,6 +29,19 @@ import RefundPolicy from './containers/compliance/refund-policy';
 import InAppMessaging from './containers/communication/InAppMessaging';
 import SupportTickets from './containers/communication/SupportTickets';
 import PaymentsAndSettlementsdetails from './containers/PaymentsAndSettlements/PaymentsAndSettlementsdetails';
+import ReserveEarnings from './containers/PaymentsAndSettlements/ReserveEarnings';
+import SellerEarnings from './containers/PaymentsAndSettlements/SellerEarnings';
+
+// index.js ya App.js me likhein
+import 'bootstrap/dist/css/bootstrap.min.css';
+import MediaUpload from './containers/product/MediaUpload';
+import 'antd/dist/reset.css';
+import BrandRequest from './containers/brand/BrandRequest';
+import AddComboProduct from './containers/product/AddComboProduct';
+import ComboProductSelector from './containers/product/ComboProductSelector';
+
+
+
 function App() {
   return (
     <Router>
@@ -37,9 +50,11 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/seller" element={<SellerOnboarding />} />
+                <Route path="/media" element={<MediaUpload />} />
         <Route path="/" element={<DashboardLayout />}>
           <Route path="home" element={<Home />} />
           <Route path="profile" element={<Profile />} />
+                    <Route path="brand" element={<BrandRequest />} />
           <Route path="product" element={<Product />} />
           <Route path="addproduct" element={<AddProduct />} />
           <Route path="edit/:id" element={<EditProduct />} />
@@ -47,11 +62,13 @@ function App() {
           <Route path="payments" element={<PaymentsAndSettlements />} />
           {/* <Route path="useraccess" element ={<UserAccess/>}/> */}
           <Route path="useraccess" element={<UserAccess />} />
-
+       <Route path="addcombo" element={<AddComboProduct />} />
+         <Route path="editcombo/:id" element={<ComboProductSelector />} />
 
           <Route path="/reviews" element={<ReviewManagement />} />
           <Route path="/product/:id" element={<ProductDetails />} />
-
+                   <Route path="reserved" element={<ReserveEarnings />} />
+        <Route path="sellerearning" element={<SellerEarnings />} />
           <Route path="/orders/:orderId" element={<OrderDetail />} />
           <Route path="/payments/details/:orderId" element={<PaymentsAndSettlementsdetails />} />
           <Route path="/compliance/gst-reports" element={<GSTReports />} />
@@ -63,7 +80,10 @@ function App() {
         </Route>
       </Routes>
     </Router>
+
   );
 }
 
 export default App;
+
+// App.jsx

@@ -7,54 +7,73 @@ import {
   message,
   Popconfirm,
   Upload,
-  Input
+  Input,
+  Switch, Form,
 } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { UploadOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import Spinner from '../../components/Spinner';
+import { deleteorarchivedproduct, getallsellerproduct } from '../../services/allService';
+import { useDispatch } from 'react-redux';
+import { setparticularproduct } from '../../redux/productSlice';
 
 const Product = () => {
+  const dispatch=useDispatch()
+    const [allproduct, setAllProduct] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+    const [hasCombo, setHasCombo] = useState(false);
+
+    const onHasComboChange = (checked) => {
+    debugger;
+      setHasCombo(checked);
+      if (checked) {
+const comboproduct=allproduct.filter(item=>item.isCombo===true);
+setProducts(comboproduct)
+      }
+      else{
+      const comboproduct=allproduct.filter(item=>item.isCombo===false);
+setProducts(comboproduct)
+      }
+    };
+  
   const navigate = useNavigate();
 
-  // mock fetch
-  useEffect(() => {
-    const mockProducts = [
-      {
-        id: '1',
-        title: 'Wireless Headphones',
-        description: "good for use",
-        brand: 'Sony',
-        category: 'electronics',
-        price: 2999,
-        quantity: 25,
-        inStock: true,
-        sku: 'SONY123',
-      },
-      {
-        id: '2',
-        title: 'Running Shoes',
-        description: "good for use",
-        brand: 'Nike',
-        category: 'clothing',
-        price: 4500,
-        quantity: 0,
-        inStock: false,
-        sku: 'NIKE567',
-      },
-    ];
-    setProducts(mockProducts);
-  }, []);
-
-  const handleDelete = (id) => {
-    setProducts((prev) => prev.filter((item) => item.id !== id));
-    message.success('Product deleted');
+  const fetchAllProduct = async () => {
+    try {
+      const response = await getallsellerproduct();
+      console.log("response", response);
+      console.log("response", response);
+      setAllProduct(response.data)
+      const updateproduct=response.data.filter((item)=>item.isCombo==true)
+  setProducts(updateproduct);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      message.error('Failed to fetch products');
+    }
   };
 
-  // Handle Excel/CSV upload
+  useEffect(() => {
+    fetchAllProduct();
+  }, []);
+ 
+  const handleDelete = async(id) => {
+    const response=await deleteorarchivedproduct(id);
+    if(response.status==200){
+      fetchAllProduct()
+          message.success('Product deleted');
+    }
+
+    message.success('Product deleted');
+  };
+  const handleedit=(reacord)=>{
+    console.log("reacord",reacord)
+    dispatch(setparticularproduct(reacord))
+  }
+
+  // Excel Upload Handler
   const handleFileUpload = (file) => {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -65,9 +84,11 @@ const Product = () => {
       const parsedData = XLSX.utils.sheet_to_json(sheet);
 
       const formattedData = parsedData.map((item, index) => ({
-        id: (products.length + index + 1).toString(),
-        inStock: item.quantity > 0,
-        ...item,
+        _id: `temp-${Date.now()}-${index}`, // Temporary ID for frontend
+        name: item.name || 'Unnamed Product',
+        brand: item?.brandAuth?.brandName || 'N/A',
+        category: item.category || 'Uncategorized',
+        isApproved: false
       }));
 
       setProducts((prev) => [...prev, ...formattedData]);
@@ -84,42 +105,45 @@ const Product = () => {
   };
 
   const columns = [
-    { title: 'Title', dataIndex: 'title', key: 'title' },
-    { title: 'Description', dataIndex: 'description', key: 'description' },
-    { title: 'Brand', dataIndex: 'brand', key: 'brand' },
+    { title: 'Product Name', dataIndex: 'name', key: 'name' },
+    { title: 'Brand', key: 'brand' ,   render: (_, record) => record.brandAuth?.brandName || 'N/A',},
     { title: 'Category', dataIndex: 'category', key: 'category' },
-    { title: 'Price (₹)', dataIndex: 'price', key: 'price' },
-    { title: 'SKU', dataIndex: 'sku', key: 'sku' },
-    { title: 'Handling Time', dataIndex: 'handlingtime', key: 'handlingtime' },
     {
-      title: 'Stock',
-      dataIndex: 'inStock',
-      key: 'inStock',
-      render: (inStock, record) =>
-        inStock ? (
-          <Tag color="green">In Stock ({record.quantity})</Tag>
-        ) : (
-          <Tag color="red">Out of Stock</Tag>
-        ),
+      title: 'Status',
+      dataIndex: 'isApproved',
+      key: 'isApproved',
+      render: (isApproved) => (
+        <Tag color={isApproved ? 'green' : 'orange'}>
+          {isApproved ? 'Approved' : 'Pending'}
+        </Tag>
+      )
     },
     {
       title: 'Actions',
       key: 'actions',
       render: (_, record) => (
+        
         <Space>
-          <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/edit/${record.id}`);
-            }}
-          >
-            Edit
-          </Button>
+         <Button
+  onClick={(e) => {
+    e.stopPropagation();
+    handleedit(record);
+
+    if (record.isCombo==false) {
+      navigate(`/edit/${record._id}`);
+    } else {
+      navigate(`/editcombo/${record._id}`);
+    }
+  }  }
+>
+  Edit
+</Button>
+
           <Popconfirm
             title="Sure to delete?"
             onConfirm={(e) => {
               e.stopPropagation();
-              handleDelete(record.id);
+              handleDelete(record._id);
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -135,7 +159,7 @@ const Product = () => {
   };
 
   const filteredProducts = products.filter((product) =>
-    product.title.toLowerCase().includes(searchTerm.toLowerCase())
+    product.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   useEffect(() => {
@@ -158,6 +182,9 @@ const Product = () => {
         }}
       >
         <h2>All Products</h2>
+                <Form.Item label="Has Combo" valuePropName="checked" name="hasCombo">
+            <Switch onChange={onHasComboChange} />
+          </Form.Item>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           <Input.Search
             placeholder="Search by product name"
@@ -167,6 +194,9 @@ const Product = () => {
           />
           <Button className="custumcss textwhite" onClick={AddProduct}>
             Add Product
+          </Button>
+           <Button className="custumcss textwhite" onClick={AddProduct}>
+            Create Combo Product
           </Button>
           <Upload {...uploadProps}>
             <Button className="custumcss textwhite" icon={<UploadOutlined />}>
@@ -180,10 +210,10 @@ const Product = () => {
         className="custum-pedding-cell"
         columns={columns}
         dataSource={filteredProducts}
-        rowKey="id"
+        rowKey="_id"
         pagination={{ pageSize: 5 }}
         onRow={(record) => ({
-          onClick: () => navigate(`/product/${record.id}`),
+          onClick: () => navigate(`/product/${record._id}`),
           style: { cursor: 'pointer' },
         })}
       />

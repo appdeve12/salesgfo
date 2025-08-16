@@ -189,7 +189,7 @@ useEffect(()=>{
                 </Button>
          
             }
-            bordered={false}
+            variant={false}
           >
             <Table
               dataSource={paymentHistoryData}
@@ -211,7 +211,7 @@ useEffect(()=>{
                 </Button>
          
             }
-            bordered={false}
+            variant={false}
           >
             <Table
               dataSource={commissionData}
@@ -232,25 +232,25 @@ useEffect(()=>{
                 </Button>
 
             }
-            bordered={false}
+            variant={false}
           />
           <Row gutter={16}>
             <Col span={8}>
-              <Card title="This Week's Settlement" bordered={false}>
+              <Card title="This Week's Settlement" variant={false}>
                 <p><strong>Amount:</strong> ₹12,500</p>
                 <p><strong>Status:</strong> <Tag color="green">Processed</Tag></p>
                 <p><strong>Date:</strong> 10–16 June</p>
               </Card>
             </Col>
             <Col span={8}>
-              <Card title="Yesterday's Settlement" bordered={false}>
+              <Card title="Yesterday's Settlement" variant={false}>
                 <p><strong>Amount:</strong> ₹2,500</p>
                 <p><strong>Status:</strong> <Tag color="orange">Pending</Tag></p>
                 <p><strong>Date:</strong> 18 June</p>
               </Card>
             </Col>
             <Col span={8}>
-              <Card title="Next Scheduled Settlement" bordered={false}>
+              <Card title="Next Scheduled Settlement" variant={false}>
                 <p><strong>Date:</strong> 20 June 2025</p>
                 <p><strong>Expected Amount:</strong> ₹6,000</p>
               </Card>

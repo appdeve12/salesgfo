@@ -96,7 +96,7 @@ navigate(`/product/${pro.id}`)
         maxHeight: 500,
         overflow: 'hidden',
       }}
-      bodyStyle={{ padding: 24 }}
+      styles={{ padding: 24 }}
     >
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={trendData}>
@@ -138,7 +138,7 @@ navigate(`/product/${pro.id}`)
                 padding: '12px 16px',
                 cursor:"pointer"
               }}
-              bodyStyle={{ display: 'flex', alignItems: 'center', gap: 16,padding:10 }}
+              styles={{ display: 'flex', alignItems: 'center', gap: 16,padding:10 }}
             >
               <Avatar src={product.image} size={48} />
               <div>

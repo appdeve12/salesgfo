@@ -88,6 +88,7 @@ const [filteredData, setFilteredData] = useState(initialData); // Keep for filte
         setReplyMessage('');
     };
 const handleAddTicket = (values) => {
+    console.log("values",values)
     const newTicket = {
         key: tickets.length + 1,
         id: `TCK-${Math.floor(10000 + Math.random() * 90000)}`,
@@ -196,7 +197,7 @@ const handleAddTicket = (values) => {
                 columns={columns}
                 dataSource={filteredData}
                 pagination={{ pageSize: 5 }}
-                bordered
+                variant
                 size="middle"
             />
 
@@ -234,6 +235,7 @@ const handleAddTicket = (values) => {
                     </Form.Item>
                 </Form>
             </Modal>
+            {/* addticketmodel */}
             <Modal
     title="Add New Ticket"
     open={addModal}

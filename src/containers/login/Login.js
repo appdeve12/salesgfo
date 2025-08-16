@@ -1,43 +1,69 @@
 // pages/Login.js
-import React from 'react';
-import { Form, Input, Button, Typography, Card } from 'antd';
+import React, { useState } from 'react';
+import { Form, Input, Button, Typography, Card, message } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { loginUser } from '../../services/allService';
+import { useDispatch } from 'react-redux';
+import { storetoken, storeuserdata } from '../../redux/authSlice';
 const { Title } = Typography;
 
 const Login = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
-
-  const onFinish = (values) => {
-    console.log('Login:', values);
-    navigate('/home')
+  const [formdata, setFormData] = useState({ email: "", password: "" })
+  console.log("formdata", formdata)
+  const handleChange = (e) => {
+    setFormData({ ...formdata, [e.target.name]: e.target.value })
+  }
+  // const onFinish = () => {
+  //   console.log('Login:', values);
+  //   navigate('/home')
+  // };
+  const handleSubmit = async () => {
+    try {
+      const response = await loginUser(formdata);
+      if (response.status === 201) {
+        localStorage.setItem('token', response.data.token);
+        dispatch(storetoken(response.data.token));
+        dispatch(storeuserdata(response.data.user));
+        message.success('Login successful!');
+        setTimeout(() => {
+          navigate('/home');
+        }, 800);
+      }
+    } catch (error) {
+      message.error(error.response?.data?.message || 'Login failed');
+    }
   };
-
   return (
     <div style={containerStyle}>
-      <Card style={cardStyle} bordered={false}>
+      <Card style={cardStyle} variant={false}>
         <Title level={2} style={titleStyle}>Welcome Back</Title>
-        <Form layout="vertical" onFinish={onFinish}>
+        <Form layout="vertical">
           <Form.Item
             name="email"
             label={<span style={labelStyle}>Email or mobile phone number</span>}
             rules={[{ required: true, message: 'Please enter your email or phone number' }]}
           >
             <Input
+              name="email"
               size="large"
               placeholder="Enter email or phone number"
               style={inputStyle}
+              onChange={(e) => handleChange(e)}
             />
           </Form.Item>
           <Form.Item
-            name="password"
+
             label={<span style={labelStyle}>Password</span>}
             rules={[{ required: true, message: 'Please enter your password' }]}
           >
             <Input.Password
               size="large"
+              name="password"
               placeholder="Enter your password"
               style={inputStyle}
+              onChange={(e) => handleChange(e)}
             />
           </Form.Item>
           <Form.Item>
@@ -46,6 +72,7 @@ const Login = () => {
               htmlType="submit"
               block
               style={buttonStyle}
+              onClick={() => handleSubmit()}
             >
               Sign In
             </Button>
@@ -74,7 +101,7 @@ const containerStyle = {
 
 const cardStyle = {
   width: 420,
- 
+
   borderRadius: 20,
   backgroundColor: 'rgba(255, 255, 255, 0.95)',
   boxShadow: '0 12px 30px rgba(0,0,0,0.2)',

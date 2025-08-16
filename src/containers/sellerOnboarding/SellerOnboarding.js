@@ -44,7 +44,7 @@ const SellerOnboarding = () => {
           <Form.Item label="Password" name="password" rules={[{ required: true }]}>
             <Input.Password />
           </Form.Item>
-          <Button className='' style={{backgroundColor:"rgb(58 71 100)"}} htmlType="submit">Next</Button>
+          <Button className='' style={{ backgroundColor: "rgb(58 71 100)" }} htmlType="submit">Next</Button>
         </Form>
       ),
     },
@@ -70,7 +70,7 @@ const SellerOnboarding = () => {
             </Upload>
           </Form.Item>
           <Button onClick={prev} style={{ marginRight: 8 }}>Previous</Button>
-          <Button style={{backgroundColor:"rgb(58 71 100)"}}  htmlType="submit">Next</Button>
+          <Button style={{ backgroundColor: "rgb(58 71 100)" }} htmlType="submit">Next</Button>
         </Form>
       ),
     },
@@ -100,7 +100,7 @@ const SellerOnboarding = () => {
             </Upload>
           </Form.Item>
           <Button onClick={prev} style={{ marginRight: 8 }}>Previous</Button>
-          <Button style={{backgroundColor:"rgb(58 71 100)"}}  htmlType="submit">Next</Button>
+          <Button style={{ backgroundColor: "rgb(58 71 100)" }} htmlType="submit">Next</Button>
         </Form>
       ),
     },
@@ -121,7 +121,7 @@ const SellerOnboarding = () => {
             <Input />
           </Form.Item>
           <Button onClick={prev} style={{ marginRight: 8 }}>Previous</Button>
-          <Button style={{backgroundColor:"rgb(58 71 100)"}}  htmlType="submit">Submit</Button>
+          <Button style={{ backgroundColor: "rgb(58 71 100)" }} htmlType="submit">Submit</Button>
         </Form>
       ),
     },

@@ -28,8 +28,8 @@ const breadcrumbItems = [
     <div>
     <Breadcrumb style={{ marginBottom: 16 }} items={breadcrumbItems} />
 
-      <Card title="Payment Overview" bordered={false}>
-        <Descriptions bordered column={2}>
+      <Card title="Payment Overview" variant={false}>
+        <Descriptions variant column={2}>
           <Descriptions.Item label="Order ID">{order.orderId}</Descriptions.Item>
           <Descriptions.Item label="Date">{order.date}</Descriptions.Item>
           <Descriptions.Item label="Amount">{order.amount}</Descriptions.Item>

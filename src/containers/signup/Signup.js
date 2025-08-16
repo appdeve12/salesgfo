@@ -3,25 +3,68 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Steps, message, Upload, Typography, Card, Row, Col } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
+import { registerSeller } from '../../services/allService';
 
 const { Step } = Steps;
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const Signup = () => {
   const [current, setCurrent] = useState(0);
-  const [formData, setFormData] = useState({});
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    phoneNumber: '',
+    password: '',
+    businessName: '',
+    storeName: '',
+    businessAddress: '',
+    gstNumber: '',
+    gstCertificateUrl: '',
+    accountName: '',
+    accountNumber: '',
+    ifscCode: '',
+    bankName: '',
+  });
 
-  const next = (values) => {
-    setFormData({ ...formData, ...values });
-    setCurrent(current + 1);
+  const next = async () => {
+    try {
+      const values = await form.validateFields();
+      setFormData((prev) => ({ ...prev, ...values }));
+      setCurrent(current + 1);
+      form.resetFields();
+    } catch (error) {
+      console.log('Validation failed:', error);
+    }
   };
 
-  const prev = () => setCurrent(current - 1);
+  const prev = () => {
+    setCurrent(current - 1);
+    form.setFieldsValue(formData); // fill previous data
+  };
 
-  const submit = (values) => {
-    const finalData = { ...formData, ...values };
-    console.log('Submitted:', finalData);
-    message.success('Registration complete!');
+  const handleUploadChange = (info) => {
+    if (info.file) {
+      setFormData((prev) => ({
+        ...prev,
+        gstCertificateUrl: info.file.name,
+      }));
+      message.success(`${info.file.name} uploaded (mock only)`);
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const values = await form.validateFields();
+      const finalData = { ...formData, ...values };
+      setLoading(true);
+      const response = await registerSeller(finalData);
+      message.success(response.data.msg || 'Seller registered successfully!');
+    } catch (error) {
+      message.error(error?.response?.data?.msg || 'Submission failed.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const uploadProps = {
@@ -33,188 +76,180 @@ const Signup = () => {
     {
       title: 'Basic Info',
       content: (
-        <Form layout="vertical" onFinish={next}>
+        <Form layout="vertical" form={form}>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item label="Full Name" name="name" rules={[{ required: true }]}>
+              <Form.Item
+                name="email"
+                label="Email"
+                rules={[{ required: true, type: 'email' }]}
+              >
                 <Input size="large" style={inputStyle} />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Email" name="email" rules={[{ required: true, type: 'email' }]}>
-                <Input size="large" style={inputStyle} />
-              </Form.Item>
-            </Col>
-          </Row>
-              <Row gutter={16}>
-            <Col span={12}>
-               <Form.Item label="Alternate Email " name="alternateemail" rules={[{ required: true, type: 'email' }]}>
-                <Input size="large" style={inputStyle} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="Password" name="password" rules={[{ required: true }]}>
+              <Form.Item
+                name="password"
+                label="Password"
+                rules={[{ required: true }]}
+              >
                 <Input.Password size="large" style={inputStyle} />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item label="Phone Number" name="phone" rules={[{ required: true }]}>
+              <Form.Item
+                name="phoneNumber"
+                label="Phone Number"
+                rules={[{ required: true }]}
+              >
                 <Input size="large" style={inputStyle} />
               </Form.Item>
             </Col>
-           
           </Row>
           <Form.Item>
-            <Button type="primary" htmlType="submit" style={buttonStyle}>Next</Button>
+            <Button type="primary" onClick={next} style={buttonStyle}>
+              Next
+            </Button>
           </Form.Item>
-            <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
-     
-            <div style={{ marginTop: 10 }}>
-          Already have an account ?  <Link to="/" style={linkStyle}>Sign In</Link>
-            </div>
-          </Form.Item>
+          <div style={{ marginTop: 10 }}>
+            Already have an account? <Link to="/" style={linkStyle}>Sign In</Link>
+          </div>
         </Form>
       ),
     },
     {
       title: 'Business Details & GST',
       content: (
-        <Form layout="vertical" onFinish={next}>
+        <Form layout="vertical" form={form}>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item label="Business Name" name="businessName" rules={[{ required: true }]}>
+              <Form.Item
+                name="businessName"
+                label="Business Name"
+                rules={[{ required: true }]}
+              >
                 <Input size="large" style={inputStyle} />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Store Name" name="storeName" rules={[{  }]}>
+              <Form.Item
+                name="storeName"
+                label="Store Name"
+              >
                 <Input size="large" style={inputStyle} />
               </Form.Item>
             </Col>
           </Row>
-          <Form.Item label="Business Address" name="address" rules={[{ required: true }]}>
+          <Form.Item
+            name="businessAddress"
+            label="Business Address"
+            rules={[{ required: true }]}
+          >
             <Input.TextArea rows={2} style={inputStyle} />
           </Form.Item>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item label="GST Number" name="gst" rules={[{ required: true }]}>
+              <Form.Item
+                name="gstNumber"
+                label="GST Number"
+                rules={[{ required: true }]}
+              >
                 <Input size="large" style={inputStyle} />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Upload GST Certificate" name="gstCertificate">
-                <Upload {...uploadProps}>
+              <Form.Item
+                name="gstCertificateUrl"
+                label="Upload GST Certificate"
+              >
+                <Upload {...uploadProps} onChange={handleUploadChange}>
                   <Button icon={<UploadOutlined />}>Upload File</Button>
                 </Upload>
+                {formData.gstCertificateUrl && (
+                  <div style={{ marginTop: 8 }}>
+                    File: {formData.gstCertificateUrl}
+                  </div>
+                )}
               </Form.Item>
             </Col>
           </Row>
           <Form.Item>
-            <Button onClick={prev} style={{ marginRight: 10 }}>Previous</Button>
-            <Button type="primary" htmlType="submit" style={buttonStyle}>Next</Button>
+            <Button onClick={prev} style={{ marginRight: 10 }}>
+              Previous
+            </Button>
+            <Button type="primary" onClick={next} style={buttonStyle}>
+              Next
+            </Button>
           </Form.Item>
-            <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
-      
-            <div style={{ marginTop: 10 }}>
-  Already have an account ?  <Link to="/" style={linkStyle}>Sign In</Link>
-            </div>
-          </Form.Item>
-        </Form>
-      ),
-    },
-    {
-      title: 'KYC Details',
-      content: (
-        <Form layout="vertical" onFinish={next}>
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item label="PAN Number" name="pan" rules={[{ required: true }]}>
-                <Input size="large" style={inputStyle} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="Aadhar Number" name="aadhar" rules={[{ required: true }]}>
-                <Input size="large" style={inputStyle} />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={8}>
-              <Form.Item label="Upload PAN Card" name="panUpload">
-                <Upload {...uploadProps}>
-                  <Button icon={<UploadOutlined />}>Upload PAN</Button>
-                </Upload>
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item label="Upload Aadhar Card" name="aadharUpload">
-                <Upload {...uploadProps}>
-                  <Button icon={<UploadOutlined />}>Upload Aadhar</Button>
-                </Upload>
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item label="Upload Business License" name="licenseUpload">
-                <Upload {...uploadProps}>
-                  <Button icon={<UploadOutlined />}>Upload License</Button>
-                </Upload>
-              </Form.Item>
-            </Col>
-          </Row>
-          <Form.Item>
-            <Button onClick={prev} style={{ marginRight: 10 }}>Previous</Button>
-            <Button type="primary" htmlType="submit" style={buttonStyle}>Next</Button>
-          </Form.Item>
-            <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
-         
-            <div style={{ marginTop: 10 }}>
-    Already have an account ?  <Link to="/" style={linkStyle}>Sign In</Link>
-  
-            </div>
-          </Form.Item>
+          <div style={{ marginTop: 10 }}>
+            Already have an account? <Link to="/" style={linkStyle}>Sign In</Link>
+          </div>
         </Form>
       ),
     },
     {
       title: 'Bank Details for Payouts',
       content: (
-        <Form layout="vertical" onFinish={submit}>
+        <Form layout="vertical" form={form}>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item label="Account Holder Name" name="accountHolder" rules={[{ required: true }]}>
+              <Form.Item
+                name="accountName"
+                label="Account Name"
+                rules={[{ required: true }]}
+              >
                 <Input size="large" style={inputStyle} />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Account Number" name="account" rules={[{ required: true }]}>
+              <Form.Item
+                name="accountNumber"
+                label="Account Number"
+                rules={[{ required: true }]}
+              >
                 <Input size="large" style={inputStyle} />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item label="IFSC Code" name="ifsc" rules={[{ required: true }]}>
+              <Form.Item
+                name="ifscCode"
+                label="IFSC Code"
+                rules={[{ required: true }]}
+              >
                 <Input size="large" style={inputStyle} />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Bank Name" name="bank" rules={[{ required: true }]}>
+              <Form.Item
+                name="bankName"
+                label="Bank Name"
+                rules={[{ required: true }]}
+              >
                 <Input size="large" style={inputStyle} />
               </Form.Item>
             </Col>
           </Row>
           <Form.Item>
-            <Button onClick={prev} style={{ marginRight: 10 }}>Previous</Button>
-            <Button type="primary" htmlType="submit" style={buttonStyle}>Submit</Button>
+            <Button onClick={prev} style={{ marginRight: 10 }}>
+              Previous
+            </Button>
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={buttonStyle}
+              loading={loading}
+              onClick={handleSubmit}
+            >
+              Submit
+            </Button>
           </Form.Item>
-            <Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
-         
-            <div style={{ marginTop: 10 }}>
-   Already have an account ?  <Link to="/" style={linkStyle}>Sign In</Link>
-            </div>
-          </Form.Item>
+          <div style={{ marginTop: 10 }}>
+            Already have an account? <Link to="/" style={linkStyle}>Sign In</Link>
+          </div>
         </Form>
       ),
     },
@@ -222,11 +257,11 @@ const Signup = () => {
 
   return (
     <div style={pageWrapper}>
-      {/* Left Illustration + Text */}
+      {/* Left Side */}
       <div style={leftSide}>
         <Title level={3}>
-          <span style={{ color: '#f08804',  fontSize:"34px" }}>Sign Up</span> to Get The Best Deals,{' '}
-          <span style={{ color: 'rgb(58, 71, 100)' ,  fontSize:"34px"}}>Exclusive</span> Offers with Fire Safety
+          <span style={{ color: '#f08804', fontSize: "34px" }}>Sign Up</span> to Get The Best Deals,{' '}
+          <span style={{ color: 'rgb(58, 71, 100)', fontSize: "34px" }}>Exclusive</span> Offers with Fire Safety
         </Title>
         <img
           src="https://www.tradeindia.com/images/default/ti-signup.svg"
@@ -235,31 +270,22 @@ const Signup = () => {
         />
       </div>
 
-      {/* Right Signup Form Card */}
+      {/* Right Side */}
       <div style={rightSide}>
         <Card style={cardStyle}>
           <Title level={4} style={{ textAlign: 'center', marginBottom: 20 }}>Create Your Seller Account</Title>
-    <div style={{ display: 'flex', gap: 32 }}>
-  {/* Left: Vertical Steps */}
-  <div style={{ width: 220 }}>
-    <Steps direction="vertical" current={current}>
-      {steps.map((item) => (
-        <Step key={item.title} title={item.title} />
-      ))}
-    </Steps>
-  </div>
-
-  {/* Right: Form Content */}
-  <div style={{ flex: 1 }}>
-    {steps[current].content}
-  </div>
-</div>
-
-
-         
+          <div style={{ display: 'flex', gap: 32 }}>
+            <div style={{ width: 220 }}>
+              <Steps direction="vertical" current={current}>
+                {steps.map((item) => (
+                  <Step key={item.title} title={item.title} />
+                ))}
+              </Steps>
+            </div>
+            <div style={{ flex: 1 }}>{steps[current].content}</div>
+          </div>
         </Card>
       </div>
-      
     </div>
   );
 };
@@ -279,7 +305,7 @@ const leftSide = {
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  fontSize:"34px"
+  fontSize: "34px"
 };
 
 const rightSide = {
@@ -290,13 +316,12 @@ const rightSide = {
 };
 
 const cardStyle = {
-  width: 900, // or even 900
+  width: 900,
   padding: 30,
   borderRadius: 16,
   backgroundColor: 'rgba(255, 255, 255, 0.97)',
   boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
 };
-
 
 const inputStyle = {
   borderRadius: 8,
@@ -311,10 +336,10 @@ const buttonStyle = {
   fontSize: '16px',
   height: '45px',
 };
+
 const linkStyle = {
   color: '#007185',
   fontWeight: '500',
 };
-
 
 export default Signup;

@@ -53,7 +53,7 @@ const InAppMessaging = () => {
         margin: 'auto',
 
       }}
-      bodyStyle={{ padding: 24 }}
+      styles={{ padding: 24 }}
     >
       <Title level={4}>💬 In-App Messaging</Title>
 

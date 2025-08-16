@@ -29,13 +29,14 @@ import {
 } from '@ant-design/icons';
 import Logo from "../../../assets/firesafety.webp";
 import { Badge } from 'antd';
-
+import { useSelector } from 'react-redux';
 import { QuestionCircleOutlined, CustomerServiceOutlined } from '@ant-design/icons';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 
 const { Header, Sider, Content } = Layout;
 
 const Dashboard = () => {
+  const userdata = useSelector(state => state.auth.userdata)
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
@@ -70,6 +71,9 @@ const Dashboard = () => {
       <Menu.Item key="profile" icon={<UserOutlined />} onClick={() => navigate('/profile')}>
         View Profile
       </Menu.Item>
+      <Menu.Item key="supportcommonute" icon={<CustomerServiceOutlined />} onClick={() => navigate('/communication/support')}>
+        Support Communication
+      </Menu.Item>
       <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
         Logout
       </Menu.Item>
@@ -80,9 +84,7 @@ const Dashboard = () => {
       <Menu.Item key="help" icon={<QuestionCircleOutlined />}>
         Help
       </Menu.Item>
-      <Menu.Item key="support" icon={<CustomerServiceOutlined />}>
-        Support
-      </Menu.Item>
+
     </Menu>
   );
   const NotificationDropdown = () => (
@@ -107,11 +109,11 @@ const Dashboard = () => {
     <div style={{ background: 'linear-gradient(to bottom right, #f0f4f8, #dff0e9)', minHeight: '100vh', padding: '20px', borderRadius: '32px' }}>
       <Layout style={{ minHeight: 'calc(100vh - 40px)', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 12px 32px rgba(0,0,0,0.1)' }}>
         <Sider className="custumcss" width={240} style={{
-       
 
-  borderRight: '1px solid #f0f0f0',
-  
-   
+
+          borderRight: '1px solid #f0f0f0',
+
+
 
 
         }}>
@@ -123,11 +125,12 @@ const Dashboard = () => {
             mode="inline"
             selectedKeys={[currentPath]}
             defaultOpenKeys={['compliance']}
-            style={{ width: 250,
-                  height: '65vh',              
-    overflowY: 'auto',           
-    overflowX:"hidden"
-             }}
+            style={{
+              width: 250,
+              height: '65vh',
+              overflowY: 'auto',
+              overflowX: "hidden"
+            }}
             theme="light"
           >
             <Menu.Item
@@ -172,7 +175,7 @@ const Dashboard = () => {
             >
               Reviews
             </Menu.Item>
-            <Menu.SubMenu
+            {/* <Menu.SubMenu
               key="communicate"
               className="custom-menu"
               icon={<MessageOutlined />} // Represents overall messaging or communication
@@ -195,23 +198,23 @@ const Dashboard = () => {
               >
                 Buyer Communication
               </Menu.Item>
-            </Menu.SubMenu>
+            </Menu.SubMenu> */}
             <Menu.SubMenu
               key="compliance"
               className="custom-menu"
               icon={<AuditOutlined />}
               title="Compliance"
             >
-              <Menu.Item key="/compliance/gst-reports" icon={<FileTextOutlined />} onClick={() => navigate('/compliance/gst-reports')}   style={{ margin: "0px 12px" }}>
+              <Menu.Item key="/compliance/gst-reports" icon={<FileTextOutlined />} onClick={() => navigate('/compliance/gst-reports')} style={{ margin: "0px 12px" }}>
                 GST Reports
               </Menu.Item>
-              <Menu.Item key="/compliance/tax" icon={<FileTextOutlined />} onClick={() => navigate('/compliance/tax')}   style={{ margin: "0px 12px" }}>
+              <Menu.Item key="/compliance/tax" icon={<FileTextOutlined />} onClick={() => navigate('/compliance/tax')} style={{ margin: "0px 12px" }}>
                 Tax Compliance
               </Menu.Item>
-              <Menu.Item key="/compliance/policies" icon={<SettingOutlined />} onClick={() => navigate('/compliance/policies')}  style={{ margin: "0px 12px" }} >
+              <Menu.Item key="/compliance/policies" icon={<SettingOutlined />} onClick={() => navigate('/compliance/policies')} style={{ margin: "0px 12px" }} >
                 Business Policies
               </Menu.Item>
-              <Menu.Item key="/compliance/refund-policy" icon={<SwapOutlined />} onClick={() => navigate('/compliance/refund-policy')}  style={{ margin: "0px 12px" }}>
+              <Menu.Item key="/compliance/refund-policy" icon={<SwapOutlined />} onClick={() => navigate('/compliance/refund-policy')} style={{ margin: "0px 12px" }}>
                 Refund & Exchange
               </Menu.Item>
             </Menu.SubMenu>
@@ -221,15 +224,15 @@ const Dashboard = () => {
           </Menu>
 
           <div className='textwhite' style={{ position: 'absolute', bottom: 15, width: '100%', textAlign: 'center' }}>
-       
-              <Dropdown overlay={SettingMenu} trigger={['click']}>
-                <Button icon={<SettingOutlined />} style={{ marginTop: 12 }} />
-              </Dropdown>
 
-            </div>
+            <Dropdown overlay={SettingMenu} trigger={['click']}>
+              <Button icon={<SettingOutlined />} style={{ marginTop: 12 }} />
+            </Dropdown>
+
+          </div>
 
 
-      
+
         </Sider>
 
         <Layout>
@@ -268,7 +271,7 @@ const Dashboard = () => {
               }}>
                 <div className='textred' style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
                   <Avatar className='custumcss' icon={<UserOutlined />} size="small" />
-                  <span style={{ marginLeft: 8, fontWeight: 500 }}>Seller</span>
+                  <span style={{ marginLeft: 8, fontWeight: 500 }}>{userdata?.businessName}</span>
                 </div>
               </Dropdown>
             </div>

@@ -11,8 +11,8 @@ import { fetchparticularsellerproduct } from '../../services/allService';
 const { Title, Text } = Typography;
 
 const ProductDetails = () => {
-  const particularproduct=useSelector(state=>state?.product?.particularproduct)
-  console.log("particularproduct",particularproduct)
+  const particularproduct = useSelector(state => state?.product?.particularproduct)
+  console.log("particularproduct", particularproduct)
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);

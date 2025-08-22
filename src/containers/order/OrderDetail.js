@@ -25,7 +25,7 @@ import {
 } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { updateorderstatus } from '../../services/allService';
-
+import { BASE_URL } from '../../services/apiRoutes';
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
 
@@ -35,7 +35,7 @@ const OrderDetail = () => {
   const allOrders = useSelector(state => state.order.allorder);
 
   const [order, setOrder] = useState(null);
-  console.log("foundordr",order)
+  console.log('order',order)
   const [shippingMethod, setShippingMethod] = useState('Courier-Partner');
 
   useEffect(() => {
@@ -163,7 +163,7 @@ navigate(`/order`)
             </Card>
           )}
         </Col>
-{/* 
+
         <Col span={12}>
           {order.items?.length > 0 && (
             <Tabs defaultActiveKey="0" tabPosition="top" type="line">
@@ -172,7 +172,7 @@ navigate(`/order`)
                 const variation = product?.variations?.[0] || {};
 
                 return (
-                  <TabPane tab={product?.name} key={index}>
+                  <TabPane tab={product.name} key={index}>
                     <Card>
                       <Row gutter={24}>
                         <Col span={10}>
@@ -180,7 +180,7 @@ navigate(`/order`)
                           <Row gutter={[8, 8]}>
                             {product.images.map((url, i) => (
                               <Col span={24} key={i}>
-                                <Image width="80%" src={url} />
+                                <Image width="80%" src={`${BASE_URL}${url}`} />
                               </Col>
                             ))}
                           </Row>
@@ -223,7 +223,7 @@ navigate(`/order`)
               })}
             </Tabs>
           )}
-        </Col> */}
+        </Col>
       </Row>
     </div>
   );

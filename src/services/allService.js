@@ -14,7 +14,7 @@ export const updatesellerprofile = (data) => {
 }
 export const getallsellerproduct = () => {
   return axiosInstance.get(API_ROUTES.GET_ALL_SELLER_PRODUCTS)
-}
+} 
 export const fetchparticularsellerproduct = (id) => {
   return axiosInstance.get(`${API_ROUTES.GET_PARTICULAR_PRODUCT}/${id}`)
 }
@@ -56,4 +56,10 @@ export const createTicket=(data)=>{
 }
 export const addcomboproduct=(data)=>{
   return axiosInstance.post(API_ROUTES.CREATE_COMBOPRODUCT,data)
+}
+export const supportTicket=(data)=>{
+return axiosInstance.post(API_ROUTES.CREATE_TICKET,data)
+}
+export const sellerallticket=()=>{
+  return axiosInstance.get(API_ROUTES.All_TICKET)
 }

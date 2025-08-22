@@ -18,6 +18,8 @@ export const API_ROUTES = {
   BRAND_REQUEST:"/api/brand/request",
   ALL_BRAND:"/api/brand/all",
   CREATE_TICKET:"/api/support/create",
-  CREATE_COMBOPRODUCT:"/api/products/combo/create"
+  CREATE_COMBOPRODUCT:"/api/products/combo/create",
+  CREATE_TICKET:"/api/support/create",
+  All_TICKET:"/api/support/my-tickets"
 
 };
